@@ -1,0 +1,35 @@
+<div class="title">
+  <h2>Game Of Life</h2>
+  <p *ngIf="!started">Chooses initial state</p>
+</div>
+
+<div class="field" style="grid-template-columns: repeat({{BOARD_SIZE}}, 1fr);">
+  <div *ngFor="let cell of field"
+       (click)="cell.alive = !cell.alive"
+       [ngStyle]="{backgroundColor: cell.alive ? '#000' : '#fff'}"
+       class="cell">
+  </div>
+</div>
+
+<button class="btn" (click)="startGame()">Start</button>
+<button (click)="pauseGame()">Pause</button>
+<button (click)="clearGame()">Clear</button>
+
+<br>
+
+<input type="range" [(ngModel)]="fillPercent">
+<input type="number" [(ngModel)]="fillPercent" min="0" max="100" style="width: fit-content;">%
+
+<br>
+
+<button (click)="randomFill()">Build</button>
+
+<br>
+
+<label>
+  Start
+  <button (click)="startGame(1)">X1</button>
+  <button (click)="startGame(2)">X2</button>
+  <button (click)="startGame(4)">X4</button>
+  <button (click)="startGame(8)">X8</button>
+</label>
