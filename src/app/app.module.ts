@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { GameComponent } from "./game/game.component";
 import { GameOfLifeComponent } from './game-of-life/game-of-life.component';
 import {FormsModule} from "@angular/forms";
+import { CellComponent } from './game-of-life/cell/cell.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameComponent,
     GameOfLifeComponent,
+    CellComponent,
   ],
   imports: [
     BrowserModule,

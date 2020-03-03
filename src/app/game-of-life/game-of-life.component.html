@@ -1,35 +1,35 @@
-<div class="title">
-  <h2>Game Of Life</h2>
-  <p *ngIf="!started">Chooses initial state</p>
-</div>
-
-<div class="field" style="grid-template-columns: repeat({{BOARD_SIZE}}, 1fr);">
-  <div *ngFor="let cell of field"
-       (click)="cell.alive = !cell.alive"
-       [ngStyle]="{backgroundColor: cell.alive ? '#000' : '#fff'}"
-       class="cell">
+<div class="row">
+  <div class="col-12 game-title">
+    <h2>Game Of Life</h2>
+    <p *ngIf="!started">Chooses initial state</p>
   </div>
 </div>
 
-<button class="btn" (click)="startGame()">Start</button>
-<button (click)="pauseGame()">Pause</button>
-<button (click)="clearGame()">Clear</button>
+<div class="dash row">
+  <div class="col-3">
+    <button (click)="pauseGame()">Pause</button>
+    <button (click)="clearGame()">Clear</button>
 
-<br>
+    <input type="range" [(ngModel)]="fillPercent">
+    <input type="number" [(ngModel)]="fillPercent" min="0" max="100" style="width: fit-content;">%
 
-<input type="range" [(ngModel)]="fillPercent">
-<input type="number" [(ngModel)]="fillPercent" min="0" max="100" style="width: fit-content;">%
+    <button (click)="randomFill()">Build</button>
 
-<br>
+    <label>
+      Start
+      <button (click)="startGame()">X1</button>
+      <button (click)="startGame(2)">X2</button>
+      <button (click)="startGame(4)">X4</button>
+      <button (click)="startGame(8)">X8</button>
+    </label>
+  </div>
 
-<button (click)="randomFill()">Build</button>
-
-<br>
-
-<label>
-  Start
-  <button (click)="startGame(1)">X1</button>
-  <button (click)="startGame(2)">X2</button>
-  <button (click)="startGame(4)">X4</button>
-  <button (click)="startGame(8)">X8</button>
-</label>
+  <div class="col-9">
+    <div class="field" style="grid-template-columns: repeat({{boardService.BOARD_SIZE}}, 1fr); width: {{10 * boardService.BOARD_SIZE}}px;">
+      <div class="cells" *ngFor="let cell of (boardService.field | async)">
+        <app-cell (click)="onCellClick(cell)" [alive]="cell.alive">
+        </app-cell>
+      </div>
+    </div>
+  </div>
+</div>
