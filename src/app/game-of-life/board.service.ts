@@ -12,7 +12,7 @@ export interface Cell {
 })
 export class BoardService {
   field = new BehaviorSubject<Cell[]>([]);
-  BOARD_SIZE = 40;
+  BOARD_SIZE = 30;
 
   constructor() {
   }
@@ -22,7 +22,7 @@ export class BoardService {
   }
 
   calculateField() {
-    let newField = [];
+    let newField: Cell[] = [];
     newField = this.buildField();
     this.field.getValue().forEach((cell, index) => {
       const neighbours = this.livingNeighboursCount(cell);
@@ -78,5 +78,9 @@ export class BoardService {
 
   clearGame() {
     this.field.next(this.buildField());
+  }
+
+  checkGameOver(): boolean {
+    return !this.field.getValue().find(cell => cell.alive);
   }
 }

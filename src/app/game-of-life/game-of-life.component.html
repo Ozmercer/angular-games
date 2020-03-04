@@ -27,7 +27,7 @@
   <div class="col-9">
     <div class="field" style="grid-template-columns: repeat({{boardService.BOARD_SIZE}}, 1fr); width: {{10 * boardService.BOARD_SIZE}}px;">
       <div class="cells" *ngFor="let cell of (boardService.field | async)">
-        <app-cell (click)="onCellClick(cell)" [alive]="cell.alive">
+        <app-cell (mouseover)="onDraw(cell, $event)" (mousedown)="onDraw(cell, $event)" [alive]="cell.alive">
         </app-cell>
       </div>
     </div>

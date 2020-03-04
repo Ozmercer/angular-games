@@ -25,6 +25,9 @@ export class GameOfLifeComponent implements OnInit {
     this.started = true;
     this.interval = setInterval(() => {
       this.boardService.calculateField();
+      if (this.boardService.checkGameOver()) {
+        this.pauseGame();
+      }
     }, 1000 / speed);
   }
 
@@ -44,7 +47,10 @@ export class GameOfLifeComponent implements OnInit {
     clearInterval(this.interval);
   }
 
-  onCellClick(cell: Cell) {
+  onDraw(cell: Cell, ev: MouseEvent) {
+    if (ev.buttons === 0) {
+      return;
+    }
     cell.alive = !cell.alive;
   }
 }
