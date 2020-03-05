@@ -11,76 +11,56 @@ export interface Cell {
   providedIn: 'root'
 })
 export class BoardService {
-  field = new BehaviorSubject<Cell[]>([]);
+  field: Cell[] = [];
   BOARD_SIZE = 30;
+  worker: Worker;
 
   constructor() {
   }
 
   initField() {
-    this.field.next(this.buildField());
+    if (typeof Worker !== 'undefined') {
+      // Create a new
+      this.worker = new Worker('./board.worker', { type: 'module' });
+      this.worker.onmessage = ({ data }) => {
+        if (data.message === 'updateField') {
+          this.repopulateField(data.body);
+        } else {
+          console.log('caught: ' + data.message);
+        }
+      };
+    } else {
+      // Web Workers are not supported in this environment.
+      // You should add a fallback so that your program still executes correctly.
+    }
+    this.buildField();
   }
 
   calculateField() {
-    let newField: Cell[] = [];
-    newField = this.buildField();
-    this.field.getValue().forEach((cell, index) => {
-      const neighbours = this.livingNeighboursCount(cell);
-      if (neighbours < 2) {
-        newField[index].alive = false;
-      } else if (neighbours > 3) {
-        newField[index].alive = false;
-      } else if (neighbours === 3) {
-        newField[index].alive = true;
-      } else if (cell.alive && neighbours >= 2 && neighbours <= 3) {
-        newField[index].alive = true;
-      }
-    });
-
-    this.field.next(newField);
-  }
-
-  livingNeighboursCount(cell) {
-    let counter = 0;
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        if (!(i === 0 && j === 0)
-          && cell.row + i < this.BOARD_SIZE && cell.col + j < this.BOARD_SIZE
-          && cell.row + i >= 0 && cell.col + j >= 0) {
-          counter += this.findCell(cell.row + i, cell.col + j)?.alive ? 1 : 0;
-        }
-      }
-    }
-    return counter;
+    this.worker.postMessage({message: 'updateField', prevField: this.field});
   }
 
   buildField() {
-    const field = [];
-    for (let i = 0; i < this.BOARD_SIZE; i++) {
-      for (let j = 0; j < this.BOARD_SIZE; j++) {
-        field.push({row: i, col: j, alive: false});
-      }
-    }
-    return field;
-  }
-
-  findCell(row, col) {
-    if (this.field.getValue()[row * this.BOARD_SIZE + col]?.alive) {
-    }
-    return this.field.getValue()[row * this.BOARD_SIZE + col];
+    this.worker.postMessage({message: 'buildField', boardSize: this.BOARD_SIZE});
   }
 
   randomFill(fillPercent: number) {
-    this.field.getValue().forEach(cell => {
+    this.field.forEach(cell => {
       cell.alive = Math.random() < (fillPercent / 100);
     });
   }
 
   clearGame() {
-    this.field.next(this.buildField());
+    this.buildField();
   }
 
   checkGameOver(): boolean {
-    return !this.field.getValue().find(cell => cell.alive);
+    return !this.field.find(cell => cell.alive);
+  }
+
+  repopulateField(newField: Cell[]) {
+    newField.forEach((cell, index) => {
+      this.field[index] = cell;
+    });
   }
 }

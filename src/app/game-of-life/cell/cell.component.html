@@ -1,4 +1,2 @@
-<div
-     [ngStyle]="{backgroundColor: alive ? '#000' : '#fff'}"
-     class="cell">
+<div class="cell" [ngClass]="{alive: alive, dead: !alive}">
 </div>
