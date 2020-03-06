@@ -12,8 +12,13 @@ export interface Cell {
 })
 export class BoardService {
   field: Cell[] = [];
-  BOARD_SIZE = 30;
+  BOARD_SIZE = 35;
   worker: Worker;
+  toggleMode = false;
+  tileSize = 1;
+  colSpread = 2;
+  rowSpread = 2;
+  pattern = 1;
 
   constructor() {
   }
@@ -21,8 +26,8 @@ export class BoardService {
   initField() {
     if (typeof Worker !== 'undefined') {
       // Create a new
-      this.worker = new Worker('./board.worker', { type: 'module' });
-      this.worker.onmessage = ({ data }) => {
+      this.worker = new Worker('./board.worker', {type: 'module'});
+      this.worker.onmessage = ({data}) => {
         if (data.message === 'updateField') {
           this.repopulateField(data.body);
         } else {
@@ -47,6 +52,44 @@ export class BoardService {
   randomFill(fillPercent: number) {
     this.field.forEach(cell => {
       cell.alive = Math.random() < (fillPercent / 100);
+    });
+  }
+
+  fillEdges() {
+    this.field.forEach(cell => {
+      if (cell.col === 0 || cell.col === this.BOARD_SIZE - 1 || cell.row === 0 || cell.row === this.BOARD_SIZE - 1) {
+        cell.alive = this.toggleMode ? !cell.alive : true;
+      }
+    });
+  }
+
+  fillX() {
+    this.field.forEach(cell => {
+      if (cell.col === cell.row || cell.col === this.BOARD_SIZE - 1 - cell.row) {
+        cell.alive = this.toggleMode ? !cell.alive : true;
+      }
+    });
+  }
+
+  fillTiles(size: number) {
+    this.field.forEach(cell => {
+      if ((cell.col % size && !(cell.row % size)) || (cell.row % size && !(cell.col % size))) {
+        cell.alive = this.toggleMode ? !cell.alive : true;
+      }
+    });
+  }
+
+  fillLines(size: number, isCol = true) {
+    this.field.forEach(cell => {
+      if (cell[isCol ? 'col' : 'row'] % size === 0) {
+        cell.alive = this.toggleMode ? !cell.alive : true;
+      }
+    });
+  }
+
+  fillPatter(size: number) {
+    this.field.forEach((cell, index) => {
+      cell.alive = index % size === 0;
     });
   }
 

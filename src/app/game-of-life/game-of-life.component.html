@@ -10,13 +10,40 @@
     <button (click)="pauseGame()">Pause</button>
     <button (click)="clearGame()">Clear</button>
 
+    <hr>
+    <label>Auto fill</label>
     <input type="range" [(ngModel)]="fillPercent">
     <input type="number" [(ngModel)]="fillPercent" min="0" max="100" style="width: fit-content;">%
-
-    <button (click)="randomFill()">Build</button>
+    <button (click)="randomFill()">Random fill</button>
+    <hr>
+    <label>
+      Toggle
+      <input type="checkbox" [(ngModel)]="boardService.toggleMode">
+    </label>
+    <br>
+    Autofill
+    <br>
+    <button (click)="boardService.fillEdges()">Edges</button>
+    <br>
+    <button (click)="boardService.fillX()">Big X</button>
+    <br>
+    Choose size: <input type="number" min="1" [(ngModel)]="boardService.tileSize" style="width: 50px;">
+    <button (click)="boardService.fillTiles(boardService.tileSize + 1)">Tiles</button>
+    <br>
+    Choose size: <input type="number" min="2" [(ngModel)]="boardService.colSpread" style="width: 50px;">
+    <button (click)="boardService.fillLines(boardService.colSpread)">Columns</button>
+    <br>
+    Choose size: <input type="number" min="2" [(ngModel)]="boardService.rowSpread" style="width: 50px;">
+    <button (click)="boardService.fillLines(boardService.rowSpread, false)">Rows</button>
+    <br>
+    Choose size: <input (input)="boardService.fillPatter($event.target.value)"
+    type="number" min="1" [(ngModel)]="boardService.pattern" style="width: 50px;">
+    <button (click)="boardService.fillPatter(boardService.pattern)">Pattern</button>
+    <br>
 
     <label>
       Start
+      <br>
       <button (click)="startGame()">X1</button>
       <button (click)="startGame(2)">X2</button>
       <button (click)="startGame(4)">X4</button>
@@ -25,7 +52,8 @@
   </div>
 
   <div class="col-9">
-    <div class="field" style="grid-template-columns: repeat({{boardService.BOARD_SIZE}}, 1fr); width: {{10 * boardService.BOARD_SIZE}}px;">
+    <div class="field"
+         style="grid-template-columns: repeat({{boardService.BOARD_SIZE}}, 1fr); width: {{10 * boardService.BOARD_SIZE}}px;">
       <div class="cells" *ngFor="let cell of boardService.field">
         <app-cell (mouseover)="onDraw(cell, $event)" (mousedown)="onDraw(cell, $event)" [alive]="cell.alive">
         </app-cell>

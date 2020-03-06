@@ -73,7 +73,6 @@ addEventListener('message', ({ data }) => {
       currentField = data.prevField;
       const newField = calculateField();
       currentField = [];
-      console.log('done calc');
       postMessage({message: 'updateField', body: newField});
       break;
     default:
