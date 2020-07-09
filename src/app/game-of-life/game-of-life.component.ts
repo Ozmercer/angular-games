@@ -11,7 +11,7 @@ export class GameOfLifeComponent implements OnInit {
   interval: number;
   fillPercent: number;
 
-  constructor(private boardService: BoardService) {
+  constructor(public boardService: BoardService) {
     this.started = false;
     this.fillPercent = 50;
   }

@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
 
 export interface Cell {
   row: number;
@@ -12,7 +11,7 @@ export interface Cell {
 })
 export class BoardService {
   field: Cell[] = [];
-  BOARD_SIZE = 35;
+  BOARD_SIZE = 30;
   worker: Worker;
   toggleMode = false;
   tileSize = 1;
