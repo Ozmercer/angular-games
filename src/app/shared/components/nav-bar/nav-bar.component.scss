@@ -1,0 +1,27 @@
+nav {
+  ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+
+    &.f-col {
+      flex-direction: column;
+    }
+    &.f-row {
+      flex-direction: row;
+    }
+
+    li {
+      margin: 0 10px;
+      font-weight: 700;
+    }
+  }
+
+  a {
+    color: inherit;
+    &:hover {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+}
