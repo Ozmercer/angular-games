@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-game',
-  templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  templateUrl: './tic-tac-toe.component.html',
+  styleUrls: ['./tic-tac-toe.component.scss']
 })
 
-export class GameComponent implements OnInit {
+export class TicTacToeComponent implements OnInit {
   isX: boolean;
-  squares: {mark: string}[];
+  squares: { mark: string }[];
   winner: string;
 
   constructor() {
@@ -23,7 +23,7 @@ export class GameComponent implements OnInit {
     this.isX = true;
     this.squares = [];
     for (let i = 0; i < 9; i++) {
-      this.squares.push({mark: null})
+      this.squares.push({mark: null});
     }
   }
 
@@ -51,6 +51,7 @@ export class GameComponent implements OnInit {
       [0, 4, 8],
       [2, 4, 6],
     ];
+    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (this.squares[a].mark && this.squares[a].mark === this.squares[b].mark && this.squares[a].mark === this.squares[c].mark) {

@@ -1,13 +1,24 @@
-<div class="container">
-  <div class="row">
-    <app-game></app-game>
+<header>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 content">
+        <h1><a routerLink="home">Angular Games</a></h1>
+        <nav>
+          <ul class="d-flex">
+            <li><a routerLink="tic-tac-toe">Tic Tac Toe</a></li>
+            <li><a routerLink="game-of-life">Game Of Life</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </div>
-  <hr style="width: 100%;">
+</header>
+
+<div class="body container">
   <div class="row">
     <div class="col-12">
-      <app-game-of-life></app-game-of-life>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
 
-<router-outlet></router-outlet>
