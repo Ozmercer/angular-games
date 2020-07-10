@@ -10,9 +10,11 @@ export class TicTacToeComponent implements OnInit {
   isX: boolean;
   squares: { mark: string }[];
   winner: string;
+  twoPlayerMode: boolean;
 
   constructor() {
     this.resetGame();
+    this.twoPlayerMode = false;
   }
 
   ngOnInit(): void {
@@ -27,8 +29,13 @@ export class TicTacToeComponent implements OnInit {
     }
   }
 
-  onSquareClick(square) {
-    if (square.mark || this.winner) {
+  toggleGameMode(is2Player: boolean) {
+    this.twoPlayerMode = is2Player;
+    this.resetGame();
+  }
+
+  onSquareClick(square, auto?: boolean) {
+    if (square?.mark || this.winner || (!this.twoPlayerMode && !this.isX && !auto)) {
       return;
     }
 
@@ -38,9 +45,20 @@ export class TicTacToeComponent implements OnInit {
     if (winner) {
       this.winner = winner;
     }
+
+    if (!this.twoPlayerMode && !this.isX) {
+      const freeCells = this.squares.filter(cell => !cell.mark);
+      const randomFreeCell = freeCells[Math.floor(Math.random() * freeCells.length)];
+      setTimeout(() => {
+        this.onSquareClick(randomFreeCell, true);
+      }, 750);
+    }
   }
 
   calculateWinner() {
+    if (!this.squares.find(cell => !cell.mark)) {
+      return 'TIE! NOBODY';
+    }
     const lines = [
       [0, 1, 2],
       [3, 4, 5],

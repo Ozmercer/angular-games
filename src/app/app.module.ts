@@ -9,6 +9,8 @@ import {FormsModule} from '@angular/forms';
 import {CellComponent} from './games/game-of-life/cell/cell.component';
 import { WelcomePageComponent } from './games/welcome-page/welcome-page.component';
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

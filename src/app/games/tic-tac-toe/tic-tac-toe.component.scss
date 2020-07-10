@@ -7,9 +7,15 @@
     margin-bottom: 20px;
   }
 
+  .players {
+    button {
+      margin: 5px;
+    }
+  }
+
   .player {
     height: 40px;
-    margin-bottom: 10px;
+    margin: 10px;
   }
 
   .board {
@@ -17,6 +23,7 @@
     flex-wrap: wrap;
     width: 150px;
     margin: 20px auto;
+    user-select: none;
     .square {
       width: 50px;
       border: 3px solid transparent;

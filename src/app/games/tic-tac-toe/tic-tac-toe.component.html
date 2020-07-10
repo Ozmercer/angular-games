@@ -2,6 +2,11 @@
   <div class="logo">
     <img src="../../../assets/tic-tac-toe.png" alt="Tic Tac Toe">
   </div>
+  <div class="players">
+    <button mat-raised-button [color]="!twoPlayerMode && 'primary'" (click)="toggleGameMode(false)">1 Player</button>
+    <button mat-raised-button [color]="twoPlayerMode && 'primary'" (click)="toggleGameMode(true)">2 Players</button>
+  </div>
+
   <div class="player">
     <p *ngIf="!winner; else announce">Current player is: {{isX ? 'X' : 'O'}}</p>
     <ng-template #announce>
@@ -17,5 +22,5 @@
 
   <br>
 
-  <button (click)="resetGame()">RESET</button>
+  <button mat-button color="warn" (click)="resetGame()">RESET</button>
 </div>
