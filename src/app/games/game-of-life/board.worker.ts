@@ -23,7 +23,6 @@ function calculateField() {
   const newField: Cell[] = buildField();
   let changed = false;
   currentField.forEach((cell, index) => {
-    const initialState = cell.alive;
     const neighbours = livingNeighboursCount(cell);
     if (neighbours < 2) {
       newField[index].alive = false;
@@ -34,7 +33,7 @@ function calculateField() {
     } else if (cell.alive && neighbours >= 2 && neighbours <= 3) {
       newField[index].alive = true;
     }
-    if (!changed && newField[index].alive !== initialState) {
+    if (!changed && newField[index].alive !== cell.alive) {
       changed = true;
     }
   });
@@ -57,8 +56,6 @@ function livingNeighboursCount(cell) {
 }
 
 function findCell(row, col) {
-  if (currentField[row * boardSize + col]?.alive) {
-  }
   return currentField[row * boardSize + col];
 }
 

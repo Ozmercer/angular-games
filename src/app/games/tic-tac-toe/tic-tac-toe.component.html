@@ -1,0 +1,21 @@
+<div class="tic-tac-toe">
+  <div class="logo">
+    <img src="../../../assets/tic-tac-toe.png" alt="Tic Tac Toe">
+  </div>
+  <div class="player">
+    <p *ngIf="!winner; else announce">Current player is: {{isX ? 'X' : 'O'}}</p>
+    <ng-template #announce>
+      <h2>{{winner}} WINS!</h2>
+    </ng-template>
+  </div>
+
+  <div class="board">
+    <div *ngFor="let square of squares" (click)="onSquareClick(square)" class="square">
+      {{square.mark}}
+    </div>
+  </div>
+
+  <br>
+
+  <button (click)="resetGame()">RESET</button>
+</div>
