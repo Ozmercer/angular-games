@@ -7,7 +7,7 @@ import {WelcomePageComponent} from './games/welcome-page/welcome-page.component'
 
 const routes: Routes = [
   {path: 'tic-tac-toe', component: TicTacToeComponent},
-  {path: 'tic-tac-toe-of-life', component: GameOfLifeComponent},
+  {path: 'game-of-life', component: GameOfLifeComponent},
   {path: 'home', component: WelcomePageComponent},
 ];
 

@@ -28,10 +28,12 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
     this.gameOver = false;
     this.interval = setInterval(() => {
       this.boardService.calculateField();
-      if (this.boardService.checkGameOver()) {
-        this.gameOver = true;
-        this.pauseGame();
-      }
+      setTimeout(() => {
+        if (this.boardService.checkGameOver()) {
+          this.gameOver = true;
+          this.pauseGame();
+        }
+      }, 0);
     }, 1000 / speed);
   }
 

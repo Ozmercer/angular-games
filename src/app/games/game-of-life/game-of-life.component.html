@@ -1,7 +1,7 @@
 <div class="game-of-life">
   <div class="row">
     <div class="col-12 game-title">
-      <h2>Game Of Corona</h2>
+      <h1>Game Of Corona</h1>
       <p>Draw a patter of viruses and press start to see it spread</p>
       <p><strong *ngIf="gameOver">GAME OVER! </strong></p>
     </div>
@@ -70,7 +70,7 @@
 
     <div class="field-wrapper">
       <div class="field"
-           [ngStyle]="{'grid-template-columns': 'repeat(' + boardService.BOARD_SIZE + ', 1fr)', width: 25 * boardService.BOARD_SIZE + 'px'}">
+           [ngStyle]="{'grid-template-columns': 'repeat(' + boardService.BOARD_SIZE + ', 1fr)', width: 24 * boardService.BOARD_SIZE + 'px'}">
         <div class="cells" *ngFor="let cell of boardService.field">
           <app-cell (mouseover)="onDraw(cell, $event)" (mousedown)="onDraw(cell, $event)" [alive]="cell.alive">
           </app-cell>

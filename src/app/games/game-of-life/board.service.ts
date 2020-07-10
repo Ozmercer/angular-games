@@ -30,7 +30,7 @@ export class BoardService {
       this.worker.onmessage = ({data}) => {
         if (data.message === 'updateField') {
           this.changed = data.changed;
-          this.repopulateField(data.body);
+          this.field = data.body;
         } else {
           console.log('caught: ' + data.message);
         }
@@ -100,11 +100,5 @@ export class BoardService {
 
   checkGameOver(): boolean {
     return this.changed === false || !this.field.find(cell => cell.alive);
-  }
-
-  repopulateField(newField: Cell[]) {
-    newField.forEach((cell, index) => {
-      this.field[index] = cell;
-    });
   }
 }

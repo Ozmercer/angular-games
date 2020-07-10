@@ -1,19 +1,30 @@
-<header>
-  <div class="container">
-    <div class="row">
-      <div class="col-12 content">
-        <h1><a routerLink="home">Angular Games</a></h1>
-        <app-nav-bar direction="row"></app-nav-bar>
+<div class="app">
+  <header>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 content">
+          <h1 style="margin: 0"><a routerLink="home">Angular Games</a></h1>
+          <app-nav-bar direction="row"></app-nav-bar>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="body">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </div>
   </div>
-</header>
 
-<div class="body container">
-  <div class="row">
-    <div class="col-12">
-      <router-outlet></router-outlet>
+  <footer>
+    <div class="row">
+      <div class="col-12">
+        <div class="signiture">© Created by Oz Mercer</div>
+      </div>
     </div>
-  </div>
+  </footer>
 </div>
-

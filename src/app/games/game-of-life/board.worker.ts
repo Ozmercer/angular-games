@@ -37,7 +37,6 @@ function calculateField() {
       changed = true;
     }
   });
-
   return {newField, changed};
 }
 
