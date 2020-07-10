@@ -11,6 +11,7 @@ import { WelcomePageComponent } from './games/welcome-page/welcome-page.componen
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {MatButtonModule} from '@angular/material/button';
     FormsModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

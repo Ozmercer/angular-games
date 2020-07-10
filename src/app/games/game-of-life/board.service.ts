@@ -56,9 +56,33 @@ export class BoardService {
     });
   }
 
-  fillEdges() {
+  fillEdges(side = 'all') {
+    const topRow = (cell: Cell) => cell.row === 0;
+    const bottomRow = (cell: Cell) => cell.row === this.BOARD_SIZE - 1;
+    const leftCol = (cell: Cell) => cell.col === 0;
+    const rightCol = (cell: Cell) => cell.col === this.BOARD_SIZE - 1;
+
+    let condition;
+    switch (side) {
+      case 'top':
+        condition = (cell: Cell) => topRow(cell);
+        break;
+      case 'bottom':
+        condition = (cell: Cell) => bottomRow(cell);
+        break;
+      case 'left':
+        condition = (cell: Cell) => leftCol(cell);
+        break;
+      case 'right':
+        condition = (cell: Cell) => rightCol(cell);
+        break;
+      default:
+        condition = (cell: Cell) => topRow(cell) || bottomRow(cell) || leftCol(cell) || rightCol(cell)
+    }
+
     this.field.forEach(cell => {
-      if (cell.col === 0 || cell.col === this.BOARD_SIZE - 1 || cell.row === 0 || cell.row === this.BOARD_SIZE - 1) {
+      // if (cell.col === 0 || cell.col === this.BOARD_SIZE - 1 || cell.row === 0 || cell.row === this.BOARD_SIZE - 1) {
+      if (condition(cell)) {
         cell.alive = this.toggleMode ? !cell.alive : true;
       }
     });

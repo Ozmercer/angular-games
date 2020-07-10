@@ -9,62 +9,88 @@
 
   <div class="board row">
     <div class="col-3 dashboard">
-      <button (click)="pauseGame()">Pause</button>
-      <button (click)="clearGame()">Clear</button>
+      <section class="pauser">
+        <button mat-button color="warn" (click)="pauseGame()">Pause</button>
+        <button mat-button color="warn" (click)="clearGame()">Clear</button>
+      </section>
 
       <hr>
-      <label>Auto fill</label>
-      <label>
-        <input type="range" [(ngModel)]="fillPercent">
-      </label>
-      <label>
-        <input type="number" [(ngModel)]="fillPercent" min="0" max="100" style="width: fit-content;">
-      </label>%
-      <button (click)="randomFill()">Random fill</button>
+
+      <section class="auto-fill">
+        <label>
+          Auto fill
+          <input type="range" [(ngModel)]="fillPercent">
+          <span>
+            <input type="number" [(ngModel)]="fillPercent" min="0" max="100" style="width: fit-content;">
+            %
+          </span>
+        </label>
+        <button mat-raised-button color="primary" (click)="randomFill()">Random fill</button>
+      </section>
+
       <hr>
-      <label>
-        Toggle
-        <input type="checkbox" [(ngModel)]="boardService.toggleMode">
-      </label>
-      <br>
-      Autofill
-      <br>
-      <button (click)="boardService.fillEdges()">Edges</button>
-      <br>
-      <button (click)="boardService.fillX()">Big X</button>
-      <br>
-      <label>
-        Choose size:
-        <input type="number" min="1" [(ngModel)]="boardService.tileSize" style="width: 50px;">
-      </label>
-      <button (click)="boardService.fillTiles(boardService.tileSize + 1)">Tiles</button>
-      <br>
-      <label>
-        Choose size:
-        <input type="number" min="2" [(ngModel)]="boardService.colSpread" style="width: 50px;">
-      </label>
-      <button (click)="boardService.fillLines(boardService.colSpread)">Columns</button>
-      <br>
-      <label>
-        Choose size:
-        <input type="number" min="2" [(ngModel)]="boardService.rowSpread" style="width: 50px;">
-      </label>
-      <button (click)="boardService.fillLines(boardService.rowSpread, false)">Rows</button>
-      <br>
-      <label>
-        Choose size: <input (input)="boardService.fillPatter($event.target.value)"
-                            type="number" min="1" [(ngModel)]="boardService.pattern" style="width: 50px;">
-      </label>
-      <button (click)="boardService.fillPatter(boardService.pattern)">Pattern</button>
-      <br>
+
+      <section class="pattern-fill">
+        <label>
+          Toggle Mode
+          <mat-checkbox type="checkbox" [(ngModel)]="boardService.toggleMode"></mat-checkbox>
+        </label>
+        <p class="title">Auto pattern</p>
+        <div class="buttons">
+          <button mat-raised-button color="primary" (click)="boardService.fillEdges('top')">Top</button>
+          <button mat-raised-button color="primary" (click)="boardService.fillEdges('bottom')">Bottom</button>
+          <button mat-raised-button color="primary" (click)="boardService.fillEdges('left')">Left</button>
+          <button mat-raised-button color="primary" (click)="boardService.fillEdges('right')">Right</button>
+          <button mat-raised-button color="primary" (click)="boardService.fillEdges()">Edges</button>
+          <button mat-raised-button color="primary" (click)="boardService.fillX()">Big X</button>
+        </div>
+
+        <hr>
+
+        <p class="title">Manual pattern</p>
+        <label>
+          <span>
+          Size:
+            <input type="number" min="1" [(ngModel)]="boardService.tileSize" style="width: 50px;">
+          </span>
+          <button mat-button (click)="boardService.fillTiles(boardService.tileSize + 1)">Add Tiles</button>
+        </label>
+
+        <label>
+          <span>
+            Size:
+            <input type="number" min="2" [(ngModel)]="boardService.colSpread" style="width: 50px;">
+          </span>
+          <button mat-button (click)="boardService.fillLines(boardService.colSpread)">Add Columns</button>
+        </label>
+
+        <label>
+          <span>
+            Size:
+            <input type="number" min="2" [(ngModel)]="boardService.rowSpread" style="width: 50px;">
+          </span>
+          <button mat-button (click)="boardService.fillLines(boardService.rowSpread, false)">Add Rows</button>
+        </label>
+
+        <label>
+          <span>
+            Size:
+            <input (input)="boardService.fillPatter($event.target.value)" type="number" min="1" [(ngModel)]="boardService.pattern"
+                   style="width: 50px;">
+          </span>
+          <button mat-button (click)="boardService.fillPatter(boardService.pattern)">Pattern</button>
+        </label>
+      </section>
+
+      <hr>
 
       <label>
-        Start
+        <strong>Start speed</strong>
         <br>
-        <button (click)="startGame()">X1</button>
-        <button (click)="startGame(2)">X2</button>
-        <button (click)="startGame(4)">X4</button>
-        <button (click)="startGame(8)">X8</button>
+        <button mat-button color="accent" style="font-size: 0.8em" (click)="startGame()">X1</button>
+        <button mat-button color="accent" style="font-size: 1.0em" (click)="startGame(2)">X2</button>
+        <button mat-button color="accent" style="font-size: 1.2em" (click)="startGame(4)">X4</button>
+        <button mat-button color="accent" style="font-size: 1.4em" (click)="startGame(8)">X8</button>
       </label>
     </div>
 

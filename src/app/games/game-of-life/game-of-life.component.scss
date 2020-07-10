@@ -11,6 +11,33 @@
       background-color: #f1f1f1;
       border: 1px solid #bbbbbb;
       padding: 5px;
+
+      section {
+        text-align: center;
+        label {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        &.pattern-fill {
+          .title {
+            text-align: left;
+            font-weight: 700;
+            font-size: 1rem;
+          }
+          .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            justify-items: center;
+            gap: 5px;
+
+            button {
+              width: 60%;
+            }
+          }
+        }
+      }
     }
 
     .field-wrapper {
