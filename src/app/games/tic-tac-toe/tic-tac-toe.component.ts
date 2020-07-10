@@ -56,9 +56,6 @@ export class TicTacToeComponent implements OnInit {
   }
 
   calculateWinner() {
-    if (!this.squares.find(cell => !cell.mark)) {
-      return 'TIE! NOBODY';
-    }
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -75,6 +72,9 @@ export class TicTacToeComponent implements OnInit {
       if (this.squares[a].mark && this.squares[a].mark === this.squares[b].mark && this.squares[a].mark === this.squares[c].mark) {
         return this.squares[a].mark;
       }
+    }
+    if (!this.squares.find(cell => !cell.mark)) {
+      return 'TIE! NOBODY';
     }
     return null;
   }
