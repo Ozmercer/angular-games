@@ -1,77 +1,80 @@
-<div class="row">
-  <div class="col-12 game-title">
-    <h2>Game Of Corona</h2>
-    <p *ngIf="!started">Chooses initial state</p>
+<div class="game-of-life">
+  <div class="row">
+    <div class="col-12 game-title">
+      <h2>Game Of Corona</h2>
+      <p>Draw a patter of viruses and press start to see it spread</p>
+      <p><strong *ngIf="gameOver">GAME OVER! </strong></p>
+    </div>
   </div>
-</div>
 
-<div class="dash row">
-  <div class="col-3">
-    <button (click)="pauseGame()">Pause</button>
-    <button (click)="clearGame()">Clear</button>
+  <div class="board row">
+    <div class="col-3 dashboard">
+      <button (click)="pauseGame()">Pause</button>
+      <button (click)="clearGame()">Clear</button>
 
-    <hr>
-    <label>Auto fill</label>
-    <label>
-      <input type="range" [(ngModel)]="fillPercent">
-    </label>
-    <label>
-      <input type="number" [(ngModel)]="fillPercent" min="0" max="100" style="width: fit-content;">
-    </label>%
-    <button (click)="randomFill()">Random fill</button>
-    <hr>
-    <label>
-      Toggle
-      <input type="checkbox" [(ngModel)]="boardService.toggleMode">
-    </label>
-    <br>
-    Autofill
-    <br>
-    <button (click)="boardService.fillEdges()">Edges</button>
-    <br>
-    <button (click)="boardService.fillX()">Big X</button>
-    <br>
-    <label>
-      Choose size:
-      <input type="number" min="1" [(ngModel)]="boardService.tileSize" style="width: 50px;">
-    </label>
-    <button (click)="boardService.fillTiles(boardService.tileSize + 1)">Tiles</button>
-    <br>
-    <label>
-      Choose size:
-      <input type="number" min="2" [(ngModel)]="boardService.colSpread" style="width: 50px;">
-    </label>
-    <button (click)="boardService.fillLines(boardService.colSpread)">Columns</button>
-    <br>
-    <label>
-      Choose size:
-      <input type="number" min="2" [(ngModel)]="boardService.rowSpread" style="width: 50px;">
-    </label>
-    <button (click)="boardService.fillLines(boardService.rowSpread, false)">Rows</button>
-    <br>
-    <label>
-      Choose size: <input (input)="boardService.fillPatter($event.target.value)"
-                          type="number" min="1" [(ngModel)]="boardService.pattern" style="width: 50px;">
-    </label>
-    <button (click)="boardService.fillPatter(boardService.pattern)">Pattern</button>
-    <br>
-
-    <label>
-      Start
+      <hr>
+      <label>Auto fill</label>
+      <label>
+        <input type="range" [(ngModel)]="fillPercent">
+      </label>
+      <label>
+        <input type="number" [(ngModel)]="fillPercent" min="0" max="100" style="width: fit-content;">
+      </label>%
+      <button (click)="randomFill()">Random fill</button>
+      <hr>
+      <label>
+        Toggle
+        <input type="checkbox" [(ngModel)]="boardService.toggleMode">
+      </label>
       <br>
-      <button (click)="startGame()">X1</button>
-      <button (click)="startGame(2)">X2</button>
-      <button (click)="startGame(4)">X4</button>
-      <button (click)="startGame(8)">X8</button>
-    </label>
-  </div>
+      Autofill
+      <br>
+      <button (click)="boardService.fillEdges()">Edges</button>
+      <br>
+      <button (click)="boardService.fillX()">Big X</button>
+      <br>
+      <label>
+        Choose size:
+        <input type="number" min="1" [(ngModel)]="boardService.tileSize" style="width: 50px;">
+      </label>
+      <button (click)="boardService.fillTiles(boardService.tileSize + 1)">Tiles</button>
+      <br>
+      <label>
+        Choose size:
+        <input type="number" min="2" [(ngModel)]="boardService.colSpread" style="width: 50px;">
+      </label>
+      <button (click)="boardService.fillLines(boardService.colSpread)">Columns</button>
+      <br>
+      <label>
+        Choose size:
+        <input type="number" min="2" [(ngModel)]="boardService.rowSpread" style="width: 50px;">
+      </label>
+      <button (click)="boardService.fillLines(boardService.rowSpread, false)">Rows</button>
+      <br>
+      <label>
+        Choose size: <input (input)="boardService.fillPatter($event.target.value)"
+                            type="number" min="1" [(ngModel)]="boardService.pattern" style="width: 50px;">
+      </label>
+      <button (click)="boardService.fillPatter(boardService.pattern)">Pattern</button>
+      <br>
 
-  <div class="col-9">
-    <div class="field"
-         [ngStyle]="{'grid-template-columns': 'repeat(' + boardService.BOARD_SIZE + ', 1fr)', width: 10 * boardService.BOARD_SIZE + 'px'}">
-      <div class="cells" *ngFor="let cell of boardService.field">
-        <app-cell (mouseover)="onDraw(cell, $event)" (mousedown)="onDraw(cell, $event)" [alive]="cell.alive">
-        </app-cell>
+      <label>
+        Start
+        <br>
+        <button (click)="startGame()">X1</button>
+        <button (click)="startGame(2)">X2</button>
+        <button (click)="startGame(4)">X4</button>
+        <button (click)="startGame(8)">X8</button>
+      </label>
+    </div>
+
+    <div class="field-wrapper">
+      <div class="field"
+           [ngStyle]="{'grid-template-columns': 'repeat(' + boardService.BOARD_SIZE + ', 1fr)', width: 25 * boardService.BOARD_SIZE + 'px'}">
+        <div class="cells" *ngFor="let cell of boardService.field">
+          <app-cell (mouseover)="onDraw(cell, $event)" (mousedown)="onDraw(cell, $event)" [alive]="cell.alive">
+          </app-cell>
+        </div>
       </div>
     </div>
   </div>

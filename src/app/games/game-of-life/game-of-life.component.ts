@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BoardService, Cell} from './board.service';
 
 @Component({
@@ -6,14 +6,16 @@ import {BoardService, Cell} from './board.service';
   templateUrl: './game-of-life.component.html',
   styleUrls: ['./game-of-life.component.scss']
 })
-export class GameOfLifeComponent implements OnInit {
+export class GameOfLifeComponent implements OnInit, OnDestroy {
   started: boolean;
   interval: number;
   fillPercent: number;
+  gameOver: boolean;
 
   constructor(public boardService: BoardService) {
     this.started = false;
     this.fillPercent = 50;
+    this.gameOver = false;
   }
 
   ngOnInit(): void {
@@ -23,9 +25,11 @@ export class GameOfLifeComponent implements OnInit {
   startGame(speed = 1) {
     this.pauseGame();
     this.started = true;
+    this.gameOver = false;
     this.interval = setInterval(() => {
       this.boardService.calculateField();
       if (this.boardService.checkGameOver()) {
+        this.gameOver = true;
         this.pauseGame();
       }
     }, 1000 / speed);
@@ -52,5 +56,9 @@ export class GameOfLifeComponent implements OnInit {
       return;
     }
     cell.alive = !cell.alive;
+  }
+
+  ngOnDestroy(): void {
+    this.clearGame();
   }
 }

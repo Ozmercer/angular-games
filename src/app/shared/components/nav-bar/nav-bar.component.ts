@@ -10,7 +10,6 @@ export class NavBarComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.direction);
   }
 
 }

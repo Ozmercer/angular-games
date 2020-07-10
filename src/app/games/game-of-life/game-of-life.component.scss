@@ -1,8 +1,27 @@
-.game-title {
-  text-align: center;
-  height: 80px;
-}
+.game-of-life {
+  margin-top: 20px;
 
-.field {
-  display: grid;
+  .game-title {
+    text-align: center;
+    height: 120px;
+  }
+
+  .board {
+    justify-content: space-between;
+
+    .dashboard {
+      background-color: #f1f1f1;
+      border: 1px solid #bbbbbb;
+      padding: 5px;
+    }
+
+    .field-wrapper {
+      text-align: right;
+      padding: 5px;
+
+      .field {
+        display: grid;
+      }
+    }
+  }
 }

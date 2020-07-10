@@ -11,6 +11,7 @@ export interface Cell {
 })
 export class BoardService {
   field: Cell[] = [];
+  changed = false;
   BOARD_SIZE = 30;
   worker: Worker;
   toggleMode = false;
@@ -28,6 +29,7 @@ export class BoardService {
       this.worker = new Worker('./board.worker', {type: 'module'});
       this.worker.onmessage = ({data}) => {
         if (data.message === 'updateField') {
+          this.changed = data.changed;
           this.repopulateField(data.body);
         } else {
           console.log('caught: ' + data.message);
@@ -97,7 +99,7 @@ export class BoardService {
   }
 
   checkGameOver(): boolean {
-    return !this.field.find(cell => cell.alive);
+    return this.changed === false || !this.field.find(cell => cell.alive);
   }
 
   repopulateField(newField: Cell[]) {
