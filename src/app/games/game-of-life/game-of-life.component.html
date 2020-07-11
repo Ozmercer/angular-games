@@ -83,14 +83,14 @@
 
       <hr>
 
-      <label>
-        <strong>Start speed</strong>
-        <br>
-        <button mat-button color="accent" style="font-size: 0.8em" (click)="startGame()">X1</button>
-        <button mat-button color="accent" style="font-size: 1.0em" (click)="startGame(2)">X2</button>
-        <button mat-button color="accent" style="font-size: 1.2em" (click)="startGame(4)">X4</button>
-        <button mat-button color="accent" style="font-size: 1.4em" (click)="startGame(8)">X8</button>
-      </label>
+      <section class="start">
+        <p class="title">Start speed</p>
+        <label>
+          <button *ngFor="let speed of [1, 2, 4, 8]; let i = index" mat-button color="accent" [style]="{fontSize: (0.8 + i * 0.2) + 'em'}" (click)="startGame(speed)">
+            X{{speed}}
+          </button>
+        </label>
+      </section>
     </div>
 
     <div class="field-wrapper">

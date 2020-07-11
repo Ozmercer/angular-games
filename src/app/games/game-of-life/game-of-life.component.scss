@@ -20,12 +20,13 @@
           align-items: center;
         }
 
+        .title {
+          text-align: left;
+          font-weight: 700;
+          font-size: 1rem;
+        }
+
         &.pattern-fill {
-          .title {
-            text-align: left;
-            font-weight: 700;
-            font-size: 1rem;
-          }
           .buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -35,6 +36,12 @@
             button {
               width: 60%;
             }
+          }
+        }
+
+        &.start {
+          button:focus {
+            outline: none;
           }
         }
       }

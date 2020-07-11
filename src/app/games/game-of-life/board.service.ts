@@ -12,7 +12,7 @@ export interface Cell {
 export class BoardService {
   field: Cell[] = [];
   changed = false;
-  BOARD_SIZE = 30;
+  BOARD_SIZE = 31;
   worker: Worker;
   toggleMode = false;
   tileSize = 1;
