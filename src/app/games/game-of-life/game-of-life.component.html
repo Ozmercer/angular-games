@@ -2,7 +2,9 @@
   <div class="row">
     <div class="col-12 game-title">
       <h1>Game Of Corona</h1>
-      <p>Draw a patter of viruses and press start to see it spread</p>
+      <p class="info">Draw a patter of viruses and press start to see it spread
+        <mat-icon class="info-icon" [matTooltip]="tooltip" matTooltipClass="info-tooltip">info</mat-icon>
+      </p>
     </div>
   </div>
 
@@ -32,7 +34,7 @@
       <section class="pattern-fill">
         <label>
           Toggle Mode
-          <mat-checkbox type="checkbox" [(ngModel)]="boardService.toggleMode"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="boardService.toggleMode"></mat-checkbox>
         </label>
         <p class="title">Auto pattern</p>
         <div class="buttons">
@@ -74,8 +76,8 @@
         <label>
           <span>
             Size:
-            <input (input)="boardService.fillPatter($event.target.value)" type="number" min="1" [(ngModel)]="boardService.pattern"
-                   style="width: 50px;">
+            <input (input)="boardService.fillPatter($event.target.value)" [(ngModel)]="boardService.pattern" min="1" style="width: 50px;"
+                   type="number">
           </span>
           <button mat-button (click)="boardService.fillPatter(boardService.pattern)">Pattern</button>
         </label>

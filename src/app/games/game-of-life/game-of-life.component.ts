@@ -11,11 +11,21 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
   interval: number;
   fillPercent: number;
   gameOver: boolean;
+  tooltip: string;
 
   constructor(public boardService: BoardService) {
     this.started = false;
     this.fillPercent = 50;
     this.gameOver = false;
+    this.tooltip = `
+    On each tick, the following will happen:
+
+    ● If a healthy monkey has 3 neighboring infected cells, he will also get infected.
+
+    ● if an infected monkey has less than 2 infected neighbours, he will get cured thanks to social distancing.
+
+    ● If an infected monkey has more than 3 infected neighbours, he will be cured because of medical hot-spot treatment.
+    `;
   }
 
   ngOnInit(): void {
