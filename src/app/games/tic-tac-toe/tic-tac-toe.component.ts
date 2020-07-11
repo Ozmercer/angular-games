@@ -51,7 +51,7 @@ export class TicTacToeComponent implements OnInit {
       const randomFreeCell = freeCells[Math.floor(Math.random() * freeCells.length)];
       setTimeout(() => {
         this.onSquareClick(randomFreeCell, true);
-      }, 750);
+      }, 500);
     }
   }
 

@@ -43,6 +43,14 @@
     .field-wrapper {
       text-align: right;
       padding: 5px;
+      position: relative;
+
+      .game-over {
+        position: absolute;
+        top: -25px;
+        left: calc(50% - 55px);
+        font-size: 1.2rem;
+      }
 
       .field {
         display: grid;

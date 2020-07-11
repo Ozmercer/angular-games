@@ -3,7 +3,6 @@
     <div class="col-12 game-title">
       <h1>Game Of Corona</h1>
       <p>Draw a patter of viruses and press start to see it spread</p>
-      <p><strong *ngIf="gameOver">GAME OVER! </strong></p>
     </div>
   </div>
 
@@ -95,6 +94,7 @@
     </div>
 
     <div class="field-wrapper">
+      <strong *ngIf="gameOver" class="game-over">GAME OVER! </strong>
       <div class="field"
            [ngStyle]="{'grid-template-columns': 'repeat(' + boardService.BOARD_SIZE + ', 1fr)', width: 24 * boardService.BOARD_SIZE + 'px'}">
         <div class="cells" *ngFor="let cell of boardService.field">
