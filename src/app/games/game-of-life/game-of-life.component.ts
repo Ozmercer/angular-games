@@ -12,11 +12,15 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
   fillPercent: number;
   gameOver: boolean;
   tooltip: string;
+  currentStreak: number;
+  longestStreak: number;
 
   constructor(public boardService: BoardService) {
     this.started = false;
     this.fillPercent = 50;
     this.gameOver = false;
+    this.longestStreak = 0;
+    this.currentStreak = 0;
     this.tooltip = `
     On each tick, the following will happen:
 
@@ -32,11 +36,16 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
     this.boardService.initField();
   }
 
-  startGame(speed = 1) {
+  startGame(speed: number) {
+    this.currentStreak = 0;
     this.pauseGame();
     this.started = true;
     this.gameOver = false;
     this.interval = setInterval(() => {
+      this.currentStreak++;
+      if (this.currentStreak > this.longestStreak) {
+        this.longestStreak = this.currentStreak
+      }
       this.boardService.calculateField();
       if (this.boardService.checkGameOver()) {
         this.gameOver = true;

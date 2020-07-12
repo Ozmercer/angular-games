@@ -50,6 +50,13 @@
             outline: none;
           }
         }
+
+        &.streak {
+          display: flex;
+          justify-content: space-between;
+          font-weight: 700;
+          font-size: 1rem;
+        }
       }
     }
 

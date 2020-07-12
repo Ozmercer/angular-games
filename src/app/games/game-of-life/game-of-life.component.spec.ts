@@ -127,4 +127,22 @@ describe('GameOfLifeComponent', () => {
     fixture.detectChanges();
     expect(board[1].querySelector('.cell')).toHaveClass('alive');
   });
+
+  it('should end game if board hasn\'t changed', fakeAsync(() => {
+    const board = fixture.nativeElement.querySelectorAll('app-cell');
+    const mouseEvent = new MouseEvent('mouseover', {buttons: 1});
+    board[1].dispatchEvent(mouseEvent);
+    fixture.detectChanges();
+    component.startGame(2);
+
+    tick(1000);
+    expect(component.gameOver).toEqual(false);
+    expect(component.started).toEqual(true);
+
+    boardService.checkGameOver.and.returnValue(true);
+    tick(1000);
+
+    expect(component.gameOver).toEqual(true);
+    expect(component.started).toEqual(false);
+  }));
 });
