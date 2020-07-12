@@ -7,22 +7,34 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {FormsModule} from '@angular/forms';
 import {BoardService} from './board.service';
+import {CellComponent} from './cell/cell.component';
 
-fdescribe('GameOfLifeComponent', () => {
+describe('GameOfLifeComponent', () => {
   let component: GameOfLifeComponent;
   let fixture: ComponentFixture<GameOfLifeComponent>;
   let boardService;
 
   beforeEach(async(() => {
+    const mockBoard = [];
+    const boardSize = 4;
+    for (let i = 0; i < boardSize; i++) {
+      for (let j = 0; j < boardSize; j++) {
+        mockBoard.push({i, j, alive: false});
+      }
+    }
     boardService = jasmine.createSpyObj('BoardService', [
       'initField',
       'calculateField',
       'checkGameOver',
       'randomFill',
-      'clearGame']);
+      'clearGame',
+      'field',
+    ]);
+    boardService.initField.and.returnValue(mockBoard);
+    boardService.field = mockBoard;
 
     TestBed.configureTestingModule({
-      declarations: [GameOfLifeComponent],
+      declarations: [GameOfLifeComponent, CellComponent],
       imports: [
         FormsModule,
         MatButtonModule,
@@ -97,5 +109,22 @@ fdescribe('GameOfLifeComponent', () => {
     fixture.nativeElement.querySelector('.auto-fill button').click();
 
     expect(boardService.randomFill).toHaveBeenCalledWith(fillPercent);
+  });
+
+  it('should toggle cell isAlive if hovering & mousepress', () => {
+    const board = fixture.nativeElement.querySelectorAll('app-cell');
+    expect(board[1].querySelector('.cell')).toHaveClass('dead');
+
+    // hover w/o mouse press
+    let mouseEvent = new MouseEvent('mouseover');
+    board[1].dispatchEvent(mouseEvent);
+    fixture.detectChanges();
+    expect(board[1].querySelector('.cell')).toHaveClass('dead');
+
+    // hover with mouse press
+    mouseEvent = new MouseEvent('mouseover', {buttons: 1});
+    board[1].dispatchEvent(mouseEvent);
+    fixture.detectChanges();
+    expect(board[1].querySelector('.cell')).toHaveClass('alive');
   });
 });
