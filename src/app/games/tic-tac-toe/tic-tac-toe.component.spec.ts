@@ -103,6 +103,27 @@ describe('GameComponent', () => {
     expect(component.squares[5].mark).toEqual(null);
   });
 
+  it('should tie if no winner', () => {
+    const compiled = fixture.nativeElement;
+    const squares = compiled.querySelectorAll('.square');
+    component.twoPlayerMode = true;
+
+    squares[0].click();
+    squares[3].click();
+    squares[1].click();
+    squares[4].click();
+    squares[5].click();
+    squares[2].click();
+    squares[8].click();
+    squares[7].click();
+    squares[6].click();
+
+    fixture.detectChanges();
+
+    expect(component.winner).toEqual('TIE! NOBODY');
+    expect(compiled.querySelector('.player').innerText).toEqual('TIE! NOBODY WINS!');
+  });
+
   describe('Auto move', () => {
     it('should make win move if possible', fakeAsync(() => {
       const compiled = fixture.nativeElement;

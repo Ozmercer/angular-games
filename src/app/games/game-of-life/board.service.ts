@@ -28,6 +28,7 @@ export class BoardService {
       // Create a new
       this.worker = new Worker('./board.worker', {type: 'module'});
       this.worker.onmessage = ({data}) => {
+        console.log(data);
         if (data.message === 'updateField') {
           this.changed = data.changed;
           this.field = data.body;
@@ -36,6 +37,7 @@ export class BoardService {
         }
       };
     } else {
+      alert('This app does not work on your browser. Please try a more modern version');
       // Web Workers are not supported in this environment.
       // You should add a fallback so that your program still executes correctly.
     }
@@ -81,7 +83,6 @@ export class BoardService {
     }
 
     this.field.forEach(cell => {
-      // if (cell.col === 0 || cell.col === this.BOARD_SIZE - 1 || cell.row === 0 || cell.row === this.BOARD_SIZE - 1) {
       if (condition(cell)) {
         cell.alive = this.toggleMode ? !cell.alive : true;
       }
