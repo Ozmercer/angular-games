@@ -46,6 +46,9 @@
         }
 
         &.start {
+          p {
+            margin: 0;
+          }
           button:focus {
             outline: none;
           }
@@ -54,6 +57,7 @@
         &.streak {
           display: flex;
           justify-content: space-between;
+          align-items: center;
           font-weight: 700;
           font-size: 1rem;
         }

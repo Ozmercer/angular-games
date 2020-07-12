@@ -85,6 +85,14 @@
 
       <hr>
 
+      <section class="streak">
+        <span>Longest pandemic: </span>
+        <span>{{longestStreak}}</span>
+        <button mat-button (click)="longestStreak = 0">Reset</button>
+      </section>
+
+      <hr>
+
       <section class="start">
         <p class="title">Start speed</p>
         <label>
@@ -92,13 +100,6 @@
             X{{speed}}
           </button>
         </label>
-      </section>
-
-      <hr>
-
-      <section class="streak">
-        <span>Longest pandemic: </span>
-        <span>{{longestStreak}}</span>
       </section>
     </div>
 
