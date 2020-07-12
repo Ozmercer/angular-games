@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WelcomePageComponent } from './welcome-page.component';
+import {NavBarComponent} from '../../shared/components/nav-bar/nav-bar.component';
 
 describe('WelcomePageComponent', () => {
   let component: WelcomePageComponent;
@@ -8,7 +9,7 @@ describe('WelcomePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WelcomePageComponent ]
+      declarations: [ WelcomePageComponent, NavBarComponent ]
     })
     .compileComponents();
   }));
