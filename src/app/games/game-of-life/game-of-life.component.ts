@@ -41,6 +41,7 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
     this.pauseGame();
     this.started = true;
     this.gameOver = false;
+    this.boardService.changed = true;
     this.interval = setInterval(() => {
       this.currentStreak++;
       if (this.currentStreak > this.longestStreak) {
