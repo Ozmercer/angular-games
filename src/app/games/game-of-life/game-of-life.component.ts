@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BoardService, Cell} from './board.service';
-import Timeout = NodeJS.Timeout;
 
 @Component({
   selector: 'app-game-of-life',
@@ -9,7 +8,7 @@ import Timeout = NodeJS.Timeout;
 })
 export class GameOfLifeComponent implements OnInit, OnDestroy {
   started: boolean;
-  interval: Timeout;
+  interval: number | any;
   fillPercent: number;
   gameOver: boolean;
   tooltip: string;
@@ -39,12 +38,10 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
     this.gameOver = false;
     this.interval = setInterval(() => {
       this.boardService.calculateField();
-      setTimeout(() => {
-        if (this.boardService.checkGameOver()) {
-          this.gameOver = true;
-          this.pauseGame();
-        }
-      }, 0);
+      if (this.boardService.checkGameOver()) {
+        this.gameOver = true;
+        this.pauseGame();
+      }
     }, 1000 / speed);
   }
 
