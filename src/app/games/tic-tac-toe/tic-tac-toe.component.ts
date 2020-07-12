@@ -41,18 +41,36 @@ export class TicTacToeComponent implements OnInit {
 
     square.mark = this.isX ? 'X' : 'O';
     this.isX = !this.isX;
-    const winner = this.calculateWinner();
-    if (winner) {
-      this.winner = winner;
-    }
+    this.winner = this.calculateWinner();
 
     if (!this.twoPlayerMode && !this.isX) {
-      const freeCells = this.squares.filter(cell => !cell.mark);
-      const randomFreeCell = freeCells[Math.floor(Math.random() * freeCells.length)];
       setTimeout(() => {
-        this.onSquareClick(randomFreeCell, true);
+        this.autoMove();
       }, 500);
     }
+  }
+
+  autoMove() {
+    const freeCells = this.squares.filter(cell => !cell.mark);
+    let nextMove = freeCells[Math.floor(Math.random() * freeCells.length)];   // Random cell
+    freeCells.forEach(cell => {
+      // Check if win move
+      cell.mark = 'O';
+      if (this.calculateWinner()) {
+        cell.mark = null;
+        this.onSquareClick(cell, true);
+        return;
+      }
+
+      // Check if can block
+      cell.mark = 'X';
+      if (this.calculateWinner()) {
+        cell.mark = null;
+        nextMove = cell;
+      }
+      cell.mark = null;
+    });
+    this.onSquareClick(nextMove, true);
   }
 
   calculateWinner() {
