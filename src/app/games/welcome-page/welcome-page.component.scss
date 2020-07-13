@@ -1,4 +1,32 @@
 .welcome-page {
   margin-top: 20px;
   text-align: center;
+  height: 80vh;
+  color: #ffffff;
+  background-image: url(/assets/gol-gif.gif);
+  background-position: center;
+  background-size: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .text {
+    background-color: rgba(255, 255, 255, 0.92);
+    color: #000;
+    width: 600px;
+    border: 2px solid #000672;
+    padding: 40px;
+    border-radius: 5px;
+    font-size: 1rem;
+
+    h1 {
+      color: #9f0000;
+      font-size: 2.5rem;
+    }
+
+    h3 {
+      font-size: 1.75rem;
+      margin: 30px 0;
+    }
+  }
 }
