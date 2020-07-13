@@ -28,7 +28,6 @@ export class BoardService {
       // Create a new
       this.worker = new Worker('./board.worker', {type: 'module'});
       this.worker.onmessage = ({data}) => {
-        console.log(data);
         if (data.message === 'updateField') {
           this.changed = data.changed;
           this.field = data.body;
@@ -42,6 +41,10 @@ export class BoardService {
       // You should add a fallback so that your program still executes correctly.
     }
     this.buildField();
+  }
+
+  unregister() {
+    this.worker.terminate();
   }
 
   calculateField() {

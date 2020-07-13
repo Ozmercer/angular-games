@@ -61,7 +61,6 @@ function findCell(row, col) {
 addEventListener('message', ({ data }) => {
   switch (data.message) {
     case 'buildField':
-      console.log('worker');
       boardSize = data.boardSize;
       const field = [];
       for (let i = 0; i < boardSize; i++) {
