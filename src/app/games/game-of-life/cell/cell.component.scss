@@ -1,16 +1,16 @@
 .cell {
   width: 24px;
   height: 24px;
-  border: 1px solid;
+  border: 1px dashed #3b4348;
   background-position: center;
   background-size: 95%;
   background-repeat: no-repeat;
   &.dead {
-    background-color: #000672;
+    background-color: #000328;
     background-image: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/monkey-face_1f435.png');
   }
   &.alive {
-    background-color: #edfffc;
+    background-color: #033000;
     background-image: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/microbe_1f9a0.png');
   }
 }

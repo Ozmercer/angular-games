@@ -44,6 +44,7 @@ export class BoardService {
   }
 
   unregister() {
+    this.initField();
     this.worker.terminate();
   }
 
