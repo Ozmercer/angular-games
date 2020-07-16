@@ -9,6 +9,7 @@ const routes: Routes = [
   {path: 'tic-tac-toe', component: TicTacToeComponent},
   {path: 'game-of-life', component: GameOfLifeComponent},
   {path: 'home', component: WelcomePageComponent},
+  {path: '', pathMatch: 'full', redirectTo: 'home'},
 ];
 
 @NgModule({

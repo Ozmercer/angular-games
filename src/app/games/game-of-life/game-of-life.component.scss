@@ -1,7 +1,17 @@
 .game-of-life {
   .game-title {
     text-align: center;
-    height: 105px;
+    height: 85px;
+
+    h1 {
+      margin: 0;
+      font-family: monospace;
+
+      .green {
+        color: #26a049;
+        font-weight: 700;
+      }
+    }
 
     .info-icon {
       transform: scale(0.7);
