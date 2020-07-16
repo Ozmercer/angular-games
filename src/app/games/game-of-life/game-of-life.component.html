@@ -10,19 +10,9 @@
 
   <div class="board row">
     <div class="col-3 dashboard">
-      <section class="start">
-        <p class="title">Start speed</p>
-        <label>
-          <button *ngFor="let speed of [1, 2, 4, 8]; let i = index" mat-button color="accent" [style]="{fontSize: (0.8 + i * 0.2) + 'em'}"
-                  (click)="startGame(speed)">
-            X{{speed}}
-          </button>
-        </label>
-      </section>
-
       <section class="pauser">
-        <button class="pause" mat-raised-button color="warn" (click)="pauseGame()">Pause</button>
-        <button class="clear" mat-raised-button color="warn" (click)="clearGame()">Clear</button>
+        <button class="pause" mat-button color="warn" (click)="pauseGame()">Pause</button>
+        <button class="clear" mat-button color="warn" (click)="clearGame()">Clear</button>
       </section>
 
       <hr>
@@ -95,10 +85,22 @@
 
       <hr>
 
+      <section class="start">
+        <p class="title">Start speed</p>
+        <label>
+          <button *ngFor="let speed of [1, 2, 4, 8]; let i = index" mat-raised-button color="accent" [style]="{fontSize: (0.8 + i * 0.2) + 'em'}"
+                  (click)="startGame(speed)">
+            X{{speed}}
+          </button>
+        </label>
+      </section>
+
+      <hr>
+
       <section class="streak">
         <span>Longest pandemic: </span>
         <span>{{longestStreak}}</span>
-        <button mat-button (click)="longestStreak = 0">Reset</button>
+        <button mat-button (click)="longestStreak = 0"><small>Reset</small></button>
       </section>
     </div>
 
