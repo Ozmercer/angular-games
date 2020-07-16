@@ -3,13 +3,30 @@
     <div class="col-12 game-title">
       <h1>Game Of <span class="green">Corona</span></h1>
       <p class="info">Draw a patter of viruses and press start to see it spread
-        <mat-icon class="info-icon" [matTooltip]="tooltip" matTooltipClass="info-tooltip">info</mat-icon>
+      <mat-icon class="info-icon" [matTooltip]="tooltip" matTooltipClass="info-tooltip">info</mat-icon>
       </p>
     </div>
   </div>
 
   <div class="board row">
     <div class="col-3 dashboard">
+      <section class="start">
+        <p class="title">Start speed</p>
+        <label>
+          <button *ngFor="let speed of [1, 2, 4, 8]; let i = index" mat-button color="accent" [style]="{fontSize: (0.8 + i * 0.2) + 'em'}"
+                  (click)="startGame(speed)">
+            X{{speed}}
+          </button>
+        </label>
+      </section>
+
+      <section class="pauser">
+        <button class="pause" mat-raised-button color="warn" (click)="pauseGame()">Pause</button>
+        <button class="clear" mat-raised-button color="warn" (click)="clearGame()">Clear</button>
+      </section>
+
+      <hr>
+
       <section class="auto-fill">
         <label>
           Auto fill
@@ -82,25 +99,6 @@
         <span>Longest pandemic: </span>
         <span>{{longestStreak}}</span>
         <button mat-button (click)="longestStreak = 0">Reset</button>
-      </section>
-
-      <hr>
-
-      <section class="start">
-        <p class="title">Start speed</p>
-        <label>
-          <button *ngFor="let speed of [1, 2, 4, 8]; let i = index" mat-button color="accent" [style]="{fontSize: (0.8 + i * 0.2) + 'em'}"
-                  (click)="startGame(speed)">
-            X{{speed}}
-          </button>
-        </label>
-      </section>
-
-      <hr>
-
-      <section class="pauser">
-        <button class="pause" mat-button color="warn" (click)="pauseGame()">Pause</button>
-        <button class="clear" mat-button color="warn" (click)="clearGame()">Clear</button>
       </section>
     </div>
 

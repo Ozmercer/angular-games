@@ -71,6 +71,11 @@
           font-weight: 700;
           font-size: 1rem;
         }
+
+        &.pauser {
+          display: flex;
+          justify-content: space-evenly;
+        }
       }
     }
 
