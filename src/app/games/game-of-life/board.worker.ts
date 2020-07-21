@@ -30,7 +30,7 @@ function calculateField() {
       newField[index].alive = false;
     } else if (neighbours === 3) {
       newField[index].alive = true;
-    } else if (cell.alive && neighbours >= 2 && neighbours <= 3) {
+    } else if (cell.alive) {
       newField[index].alive = true;
     }
     if (!changed && newField[index].alive !== cell.alive) {
@@ -44,10 +44,14 @@ function livingNeighboursCount(cell) {
   let counter = 0;
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
-      if (!(i === 0 && j === 0)
-        && cell.row + i < boardSize && cell.col + j < boardSize
-        && cell.row + i >= 0 && cell.col + j >= 0) {
-        counter += findCell(cell.row + i, cell.col + j)?.alive ? 1 : 0;
+      if (
+        !(i === 0 && j === 0)
+        && cell.row + i < boardSize
+        && cell.col + j < boardSize
+        && cell.row + i >= 0
+        && cell.col + j >= 0
+      ) {
+        counter += findCell(cell.row + i, cell.col + j).alive ? 1 : 0;
       }
     }
   }
@@ -58,7 +62,7 @@ function findCell(row, col) {
   return currentField[row * boardSize + col];
 }
 
-addEventListener('message', ({ data }) => {
+addEventListener('message', ({data}) => {
   switch (data.message) {
     case 'buildField':
       boardSize = data.boardSize;
