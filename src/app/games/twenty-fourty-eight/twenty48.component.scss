@@ -1,0 +1,26 @@
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  width: 202px;
+  margin: 20px auto;
+  user-select: none;
+  border: 1px solid orangered;
+  .square {
+    width: 50px;
+    border: 1px solid transparent;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 2rem;
+    font-family: sans-serif;
+    color: orange;
+    &:nth-child(n+5) {
+      border-top-color: orangered;
+    }
+    &:not(:nth-child(4n+1)) {
+      border-left-color: orangered;
+    }
+  }
+}

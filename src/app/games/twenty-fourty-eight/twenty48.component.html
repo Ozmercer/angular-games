@@ -1,0 +1,12 @@
+<div class="tic-tac-toe">
+  <div class="logo">
+    <img src="../../../assets/2048.png" alt="2048">
+  </div>
+
+  <div class="board">
+    <div *ngFor="let square of table" class="square">
+      {{square.value || '0'}}
+    </div>
+  </div>
+  <button mat-button color="warn">RESET</button>
+</div>

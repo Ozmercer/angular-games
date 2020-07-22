@@ -14,6 +14,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { Twenty48Component } from './games/twenty-fourty-eight/twenty48.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     CellComponent,
     WelcomePageComponent,
     NavBarComponent,
+    Twenty48Component,
   ],
   imports: [
     BrowserModule,
