@@ -17,6 +17,7 @@ export class Twenty48Component implements OnInit {
   table: Tile[] = [];
   score: number;
   uniqueTiles: number;
+  changed: boolean;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -34,6 +35,7 @@ export class Twenty48Component implements OnInit {
   constructor() {
     this.score = 0;
     this.uniqueTiles = 3;
+    this.changed = false;
   }
 
   ngOnInit(): void {
@@ -51,6 +53,8 @@ export class Twenty48Component implements OnInit {
     const randomIdx = Math.floor(Math.random() * emptyTiles.length);
     const randomEmptyTile = emptyTiles[randomIdx];
     randomEmptyTile.value = 2 ** Math.floor(Math.random() * (this.uniqueTiles) + 1);
+
+    this.changed = false;
   }
 
   play(direction) {
@@ -75,9 +79,12 @@ export class Twenty48Component implements OnInit {
           this.moveRight(row, 2, this.findTile(row, 3));
         }
         break;
-      default: return;
+      default:
+        return;
     }
-    this.addTile();
+    if (this.changed) {
+      this.addTile();
+    }
   }
 
   moveDown(row: number, col: number, belowTile: Tile) {
@@ -96,15 +103,16 @@ export class Twenty48Component implements OnInit {
     }
     // cells match - combine and restart
     if (belowTile.value && thisTile.value === belowTile.value) {
-      console.log(thisTile, belowTile);
       belowTile.value *= 2;
       thisTile.value = null;
+      this.changed = true;
       this.moveDown(row, col, belowTile);
     }
     // next cell is empty - move tile and restart
     if (thisTile.value && !belowTile.value) {
       belowTile.value = thisTile.value;
       thisTile.value = null;
+      this.changed = true;
       this.moveDown(row, col, belowTile);
     }
   }
@@ -128,12 +136,14 @@ export class Twenty48Component implements OnInit {
     if (aboveTile.value && thisTile.value === aboveTile.value) {
       aboveTile.value *= 2;
       thisTile.value = null;
+      this.changed = true;
       this.moveUp(row, col, aboveTile);
     }
     // next cell is empty - move tile and restart
     if (thisTile.value && !aboveTile.value) {
       aboveTile.value = thisTile.value;
       thisTile.value = null;
+      this.changed = true;
       this.moveUp(row, col, aboveTile);
     }
   }
@@ -157,12 +167,14 @@ export class Twenty48Component implements OnInit {
     if (aboveTile.value && thisTile.value === aboveTile.value) {
       aboveTile.value *= 2;
       thisTile.value = null;
+      this.changed = true;
       this.moveLeft(row, col, aboveTile);
     }
     // next cell is empty - move tile and restart
     if (thisTile.value && !aboveTile.value) {
       aboveTile.value = thisTile.value;
       thisTile.value = null;
+      this.changed = true;
       this.moveLeft(row, col, aboveTile);
     }
   }
@@ -186,12 +198,14 @@ export class Twenty48Component implements OnInit {
     if (aboveTile.value && thisTile.value === aboveTile.value) {
       aboveTile.value *= 2;
       thisTile.value = null;
+      this.changed = true;
       this.moveRight(row, col, aboveTile);
     }
     // next cell is empty - move tile and restart
     if (thisTile.value && !aboveTile.value) {
       aboveTile.value = thisTile.value;
       thisTile.value = null;
+      this.changed = true;
       this.moveRight(row, col, aboveTile);
     }
   }
