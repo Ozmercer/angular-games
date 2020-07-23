@@ -19,6 +19,7 @@ export class Twenty48Component implements OnInit {
   changed: boolean;
   gameOver: boolean;
   testMode: boolean;
+  win: boolean;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -43,6 +44,7 @@ export class Twenty48Component implements OnInit {
     this.changed = false;
     this.gameOver = false;
     this.testMode = false;
+    this.win = false;
   }
 
   ngOnInit(): void {
@@ -146,6 +148,9 @@ export class Twenty48Component implements OnInit {
     if (prevTile.value && thisTile.value === prevTile.value) {
       prevTile.value *= 2;
       thisTile.value = null;
+      if (prevTile.value === 8) {
+        this.win = true;
+      }
       this.changed = true;
       this.moveTo(row, col, prevTile, direction);
     }
@@ -174,6 +179,9 @@ export class Twenty48Component implements OnInit {
   setNewGame() {
     this.table = [];
     this.uniqueTiles = 1;
+    this.win = false;
+    this.gameOver = false;
+
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         this.table.push({row: i, col: j, value: null});

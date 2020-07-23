@@ -1,26 +1,64 @@
-.board {
-  display: flex;
-  flex-wrap: wrap;
-  width: 202px;
-  margin: 20px auto;
-  user-select: none;
-  border: 1px solid orangered;
-  .square {
-    width: 50px;
-    border: 1px solid transparent;
-    height: 50px;
+.twenty48 {
+  text-align: center;
+
+  .titles {
+    height: 100px;
+    padding: 10px;
+  }
+
+  .board {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 700;
-    font-size: 2rem;
-    font-family: sans-serif;
-    color: orange;
-    &:nth-child(n+5) {
-      border-top-color: orangered;
+    flex-wrap: wrap;
+    width: 242px;
+    margin: 20px auto;
+    user-select: none;
+    border: 1px solid orangered;
+    .square {
+      width: 60px;
+      border: 1px solid transparent;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 2rem;
+      font-family: sans-serif;
+      color: orange;
+      &:nth-child(n+5) {
+        border-top-color: orangered;
+      }
+      &:not(:nth-child(4n+1)) {
+        border-left-color: orangered;
+      }
     }
-    &:not(:nth-child(4n+1)) {
-      border-left-color: orangered;
+  }
+}
+
+.win-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    width: 500px;
+    height: 200px;
+    background-color: #fff;
+    border: 5px solid orangered;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+
+    .text {
+      font-size: 3rem;
     }
   }
 }

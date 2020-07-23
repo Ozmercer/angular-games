@@ -15,6 +15,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { Twenty48Component } from './games/twenty-fourty-eight/twenty48.component';
+import { FireworksComponent } from './shared/components/fireworks/fireworks.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { Twenty48Component } from './games/twenty-fourty-eight/twenty48.componen
     WelcomePageComponent,
     NavBarComponent,
     Twenty48Component,
+    FireworksComponent,
   ],
   imports: [
     BrowserModule,
