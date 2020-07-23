@@ -12,12 +12,13 @@ interface Tile {
   styleUrls: ['./twenty48.component.scss']
 })
 
-
 export class Twenty48Component implements OnInit {
   table: Tile[] = [];
   score: number;
   uniqueTiles: number;
   changed: boolean;
+  gameOver: boolean;
+  testMode: boolean;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -26,6 +27,10 @@ export class Twenty48Component implements OnInit {
       || event.key === 'ArrowUp'
       || event.key === 'ArrowLeft'
       || event.key === 'ArrowRight'
+      || event.key === 'w'
+      || event.key === 'a'
+      || event.key === 's'
+      || event.key === 'd'
     ) {
       event.preventDefault();
       this.play(event.key);
@@ -34,18 +39,14 @@ export class Twenty48Component implements OnInit {
 
   constructor() {
     this.score = 0;
-    this.uniqueTiles = 3;
+    this.uniqueTiles = 1;
     this.changed = false;
+    this.gameOver = false;
+    this.testMode = false;
   }
 
   ngOnInit(): void {
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        this.table.push({row: i, col: j, value: null});
-      }
-    }
-    this.addTile();
-    this.addTile();
+    this.setNewGame();
   }
 
   addTile() {
@@ -57,160 +58,128 @@ export class Twenty48Component implements OnInit {
     this.changed = false;
   }
 
+  findTile(row, col) {
+    const table = this.testMode
+      ? this.table.map(tile => ({...tile}))  // deep copy
+      : this.table;
+    return table.find(tile => tile.row === row && tile.col === col);
+  }
+
   play(direction) {
     switch (direction) {
-      case 'ArrowDown':
+      case 'ArrowUp':
+      case 'w':
         for (let col = 0; col < 4; col++) {
-          this.moveDown(2, col, this.findTile(3, col));
+          this.moveTo(1, col, this.findTile(0, col), 'up');
         }
         break;
-      case 'ArrowUp':
+      case 'ArrowDown':
+      case 's':
         for (let col = 0; col < 4; col++) {
-          this.moveUp(1, col, this.findTile(0, col));
+          this.moveTo(2, col, this.findTile(3, col), 'down');
         }
         break;
       case 'ArrowLeft':
+      case 'a':
         for (let row = 0; row < 4; row++) {
-          this.moveLeft(row, 1, this.findTile(row, 0));
+          this.moveTo(row, 1, this.findTile(row, 0), 'left');
         }
         break;
       case 'ArrowRight':
+      case 'd':
         for (let row = 0; row < 4; row++) {
-          this.moveRight(row, 2, this.findTile(row, 3));
+          this.moveTo(row, 2, this.findTile(row, 3), 'right');
         }
         break;
       default:
         return;
     }
-    if (this.changed) {
+    if (!this.testMode && this.changed) {
       this.addTile();
     }
+
+    if (!this.testMode && !this.table.find(tile => tile.value === null)) {
+      this.gameOver = this.checkGameOver();
+    }
   }
 
-  moveDown(row: number, col: number, belowTile: Tile) {
+  moveTo(row: number, col: number, prevTile: Tile, direction: string) {
+    const endCondition = (): boolean => {
+      switch (direction) {
+        case 'down':
+          return row < 0;
+        case 'up':
+          return row > 3;
+        case 'left':
+          return col > 3;
+        case 'right':
+          return col < 0;
+      }
+    };
+    const nextTile = (): [number, number] => {
+      switch (direction) {
+        case 'down':
+          return [row - 1, col];
+        case 'up':
+          return [row + 1, col];
+        case 'left':
+          return [row, col + 1];
+        case 'right':
+          return [row, col - 1];
+      }
+    };
     const thisTile = this.findTile(row, col);
     // completed table - end
-    if (row < 0) {
+    if (endCondition()) {
       return;
     }
-    // cell empty - continue
+    const [i, j] = nextTile();
+    // cell empty - skip
     if (!thisTile.value) {
-      this.moveDown(row - 1, col, thisTile);
+      this.moveTo(i, j, thisTile, direction);
     }
-    // cell blocked - end
-    if (belowTile.value && this.findTile(row, col).value !== belowTile.value) {
-      return this.moveDown(row - 1, col, thisTile);
+    // cell blocked - continue
+    if (prevTile.value && this.findTile(row, col).value !== prevTile.value) {
+      return this.moveTo(i, j, thisTile, direction);
     }
-    // cells match - combine and restart
-    if (belowTile.value && thisTile.value === belowTile.value) {
-      belowTile.value *= 2;
+    // cells match - combine and re-check
+    if (prevTile.value && thisTile.value === prevTile.value) {
+      prevTile.value *= 2;
       thisTile.value = null;
       this.changed = true;
-      this.moveDown(row, col, belowTile);
+      this.moveTo(row, col, prevTile, direction);
     }
-    // next cell is empty - move tile and restart
-    if (thisTile.value && !belowTile.value) {
-      belowTile.value = thisTile.value;
+    // next cell is empty - move tile and re-check
+    if (thisTile.value && !prevTile.value) {
+      prevTile.value = thisTile.value;
       thisTile.value = null;
       this.changed = true;
-      this.moveDown(row, col, belowTile);
+      this.moveTo(row, col, prevTile, direction);
     }
   }
 
-  moveUp(row: number, col: number, aboveTile: Tile) {
-    const thisTile = this.findTile(row, col);
+  checkGameOver() {
+    this.testMode = true;
 
-    // completed table - end
-    if (row > 3) {
-      return;
-    }
-    // cell empty - continue
-    if (!thisTile.value) {
-      this.moveUp(row + 1, col, thisTile);
-    }
-    // cell blocked - end
-    if (aboveTile.value && this.findTile(row, col).value !== aboveTile.value) {
-      return this.moveUp(row + 1, col, thisTile);
-    }
-    // cells match - combine and restart
-    if (aboveTile.value && thisTile.value === aboveTile.value) {
-      aboveTile.value *= 2;
-      thisTile.value = null;
-      this.changed = true;
-      this.moveUp(row, col, aboveTile);
-    }
-    // next cell is empty - move tile and restart
-    if (thisTile.value && !aboveTile.value) {
-      aboveTile.value = thisTile.value;
-      thisTile.value = null;
-      this.changed = true;
-      this.moveUp(row, col, aboveTile);
-    }
+    this.play('w');
+    this.play('a');
+    const isGameOver = !this.changed;
+
+    this.changed = false;
+    this.testMode = false;
+
+    return isGameOver;
   }
 
-  moveLeft(row: number, col: number, aboveTile: Tile) {
-    const thisTile = this.findTile(row, col);
-
-    // completed table - end
-    if (col > 3) {
-      return;
+  setNewGame() {
+    this.table = [];
+    this.uniqueTiles = 1;
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        this.table.push({row: i, col: j, value: null});
+      }
     }
-    // cell empty - continue
-    if (!thisTile.value) {
-      this.moveLeft(row, col + 1, thisTile);
-    }
-    // cell blocked - end
-    if (aboveTile.value && this.findTile(row, col).value !== aboveTile.value) {
-      return this.moveLeft(row, col + 1, thisTile);
-    }
-    // cells match - combine and restart
-    if (aboveTile.value && thisTile.value === aboveTile.value) {
-      aboveTile.value *= 2;
-      thisTile.value = null;
-      this.changed = true;
-      this.moveLeft(row, col, aboveTile);
-    }
-    // next cell is empty - move tile and restart
-    if (thisTile.value && !aboveTile.value) {
-      aboveTile.value = thisTile.value;
-      thisTile.value = null;
-      this.changed = true;
-      this.moveLeft(row, col, aboveTile);
-    }
-  }
-
-  moveRight(row: number, col: number, aboveTile: Tile) {
-    const thisTile = this.findTile(row, col);
-
-    // completed table - end
-    if (col < 0) {
-      return;
-    }
-    // cell empty - continue
-    if (!thisTile.value) {
-      this.moveRight(row, col - 1, thisTile);
-    }
-    // cell blocked - end
-    if (aboveTile.value && this.findTile(row, col).value !== aboveTile.value) {
-      return this.moveRight(row, col - 1, thisTile);
-    }
-    // cells match - combine and restart
-    if (aboveTile.value && thisTile.value === aboveTile.value) {
-      aboveTile.value *= 2;
-      thisTile.value = null;
-      this.changed = true;
-      this.moveRight(row, col, aboveTile);
-    }
-    // next cell is empty - move tile and restart
-    if (thisTile.value && !aboveTile.value) {
-      aboveTile.value = thisTile.value;
-      thisTile.value = null;
-      this.changed = true;
-      this.moveRight(row, col, aboveTile);
-    }
-  }
-
-  findTile(row, col) {
-    return this.table.find(tile => tile.row === row && tile.col === col);
+    this.addTile();
+    this.addTile();
   }
 }
