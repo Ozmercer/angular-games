@@ -5,14 +5,14 @@
       alt="2048">
   </div>
   <div class="titles">
-    <h1 *ngIf="gameOver">GAME OVER</h1>
+    <h1 *ngIf="gameOver" class="game-over">GAME OVER</h1>
   </div>
   <div class="board">
     <div *ngFor="let square of table" class="square">
       {{square.value}}
     </div>
   </div>
-  <button mat-button color="warn" (click)="setNewGame()">RESET</button>
+  <button class="reset" mat-button color="warn" (click)="setNewGame()">RESET</button>
 </div>
 
 <div class="win-modal" *ngIf="win" (click)="win = false">

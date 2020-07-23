@@ -29,6 +29,7 @@ describe('GameOfLifeComponent', () => {
       'randomFill',
       'clearGame',
       'field',
+      'unregister',
     ]);
     boardService.initField.and.returnValue(mockBoard);
     boardService.field = mockBoard;

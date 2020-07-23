@@ -148,8 +148,12 @@ export class Twenty48Component implements OnInit {
     if (prevTile.value && thisTile.value === prevTile.value) {
       prevTile.value *= 2;
       thisTile.value = null;
-      if (prevTile.value === 8) {
+      if (prevTile.value === 2048) {
         this.win = true;
+      }
+      // new tile can be up to 3 steps less than highest current tile
+      if (prevTile.value > 2 ** (this.uniqueTiles + 3)) {
+        this.uniqueTiles++;
       }
       this.changed = true;
       this.moveTo(row, col, prevTile, direction);
