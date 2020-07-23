@@ -170,7 +170,7 @@ describe('TwentyFourtyEightComponent', () => {
     it('should merge two adjacent tiles of the same value', () => {
       expect(findTile(0, 0).value).toEqual(2);
       expect(findTile(0, 1).value).toEqual(2);
-      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowLeft'}));
+      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'a'}));
       expect(findTile(0, 0).value).toEqual(4);
       expect([null, 2]).toContain(findTile(0, 1).value);
     });
@@ -178,7 +178,7 @@ describe('TwentyFourtyEightComponent', () => {
     it('should merge two non-adjacent tiles of the same value', () => {
       expect(findTile(1, 2).value).toEqual(4);
       expect(findTile(3, 2).value).toEqual(4);
-      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+      document.dispatchEvent(new KeyboardEvent('keydown', {key: 's'}));
       expect([null, 2]).toContain(findTile(1, 2).value);
       expect(findTile(3, 2).value).toEqual(8);
     });
@@ -186,7 +186,7 @@ describe('TwentyFourtyEightComponent', () => {
     it('should not move tile if adjacent tile is of different value', () => {
       expect(findTile(0, 0).value).toEqual(2);
       expect(findTile(1, 0).value).toEqual(8);
-      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
+      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'w'}));
       expect(findTile(0, 0).value).toEqual(2);
       expect(findTile(1, 0).value).toEqual(8);
     });
@@ -195,7 +195,7 @@ describe('TwentyFourtyEightComponent', () => {
       expect(findTile(1, 0).value).toEqual(8);
       expect(findTile(1, 2).value).toEqual(4);
       expect([null, 2]).toContain(findTile(1, 3).value);
-      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight'}));
+      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'd'}));
       expect(findTile(1, 0).value).toEqual(null);
       expect(findTile(1, 2).value).toEqual(8);
       expect(findTile(1, 3).value).toEqual(4);

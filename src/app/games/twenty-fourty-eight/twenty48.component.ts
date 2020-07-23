@@ -93,8 +93,6 @@ export class Twenty48Component implements OnInit {
           this.moveTo(row, 2, this.findTile(row, 3), 'right');
         }
         break;
-      default:
-        return;
     }
     if (!this.testMode && this.changed) {
       this.addTile();
