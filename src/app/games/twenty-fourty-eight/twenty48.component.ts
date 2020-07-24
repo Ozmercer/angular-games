@@ -4,6 +4,8 @@ interface Tile {
   row: number;
   col: number;
   value: number;
+  isNew: boolean;
+  isMerged: boolean;
 }
 
 @Component({
@@ -56,6 +58,7 @@ export class Twenty48Component implements OnInit {
     const randomIdx = Math.floor(Math.random() * emptyTiles.length);
     const randomEmptyTile = emptyTiles[randomIdx];
     randomEmptyTile.value = this.score < 2 ? 2 : 2 ** Math.floor(Math.random() * 2 + 1);
+    randomEmptyTile.isNew = true;
 
     this.changed = false;
   }
@@ -128,11 +131,14 @@ export class Twenty48Component implements OnInit {
           return [row, col - 1];
       }
     };
-    const thisTile = this.findTile(row, col);
+
     // completed table - end
     if (endCondition()) {
       return;
     }
+    const thisTile = this.findTile(row, col);
+    thisTile.isNew = false;
+    thisTile.isMerged = false;
     const [i, j] = nextTile();
     // cell empty - skip
     if (!thisTile.value) {
@@ -145,6 +151,7 @@ export class Twenty48Component implements OnInit {
     // cells match - combine and re-check
     if (prevTile.value && thisTile.value === prevTile.value) {
       prevTile.value *= 2;
+      prevTile.isMerged = true;
       thisTile.value = null;
       if (prevTile.value === 2048) {
         this.win = true;
@@ -183,10 +190,11 @@ export class Twenty48Component implements OnInit {
     this.table = [];
     this.win = false;
     this.gameOver = false;
+    this.score = 0;
 
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
-        this.table.push({row: i, col: j, value: null});
+        this.table.push({row: i, col: j, value: null, isNew: false, isMerged: false});
       }
     }
     this.addTile();

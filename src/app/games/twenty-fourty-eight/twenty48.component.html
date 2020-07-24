@@ -8,8 +8,8 @@
     <h1 *ngIf="gameOver" class="game-over">GAME OVER</h1>
   </div>
   <div class="board">
-    <div *ngFor="let square of table" class="square">
-      {{square.value}}
+    <div *ngFor="let tile of table" class="tile tile--{{tile.value || 0}}" [ngClass]="{merged: tile.isMerged, new: tile.isNew}">
+      {{tile.value}}
     </div>
   </div>
   <div class="score">SCORE: {{score}}</div>
