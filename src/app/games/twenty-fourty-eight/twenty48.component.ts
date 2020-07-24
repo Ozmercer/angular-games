@@ -22,21 +22,26 @@ export class Twenty48Component implements OnInit {
   gameOver: boolean;
   testMode: boolean;
   win: boolean;
+  tilt: string;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (
-      event.key === 'ArrowDown'
+      !this.gameOver
+      && (event.key === 'ArrowDown'
       || event.key === 'ArrowUp'
       || event.key === 'ArrowLeft'
       || event.key === 'ArrowRight'
       || event.key === 'w'
       || event.key === 'a'
       || event.key === 's'
-      || event.key === 'd'
+      || event.key === 'd')
     ) {
       event.preventDefault();
       this.play(event.key);
+      setTimeout(() => {
+        this.tilt = null;
+      }, 150);
     }
   }
 
@@ -47,6 +52,7 @@ export class Twenty48Component implements OnInit {
     this.testMode = false;
     this.win = false;
     this.highscore = +localStorage.getItem('highscore') || 0;
+    this.tilt = null;
   }
 
   ngOnInit(): void {
@@ -74,24 +80,28 @@ export class Twenty48Component implements OnInit {
     switch (direction) {
       case 'ArrowUp':
       case 'w':
+        this.tilt = 'up';
         for (let col = 0; col < 4; col++) {
           this.moveTo(1, col, this.findTile(0, col), 'up');
         }
         break;
       case 'ArrowDown':
       case 's':
+        this.tilt = 'down';
         for (let col = 0; col < 4; col++) {
           this.moveTo(2, col, this.findTile(3, col), 'down');
         }
         break;
       case 'ArrowLeft':
       case 'a':
+        this.tilt = 'left';
         for (let row = 0; row < 4; row++) {
           this.moveTo(row, 1, this.findTile(row, 0), 'left');
         }
         break;
       case 'ArrowRight':
       case 'd':
+        this.tilt = 'right';
         for (let row = 0; row < 4; row++) {
           this.moveTo(row, 2, this.findTile(row, 3), 'right');
         }

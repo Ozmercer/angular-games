@@ -1,6 +1,11 @@
 .twenty48 {
   text-align: center;
 
+  .logo img {
+    margin-top: 20px;
+    height: 150px;
+  }
+
   .titles {
     height: 100px;
     padding: 10px;
@@ -13,6 +18,22 @@
     margin: 20px auto;
     user-select: none;
     border: 1px solid orangered;
+    box-shadow: 0 0 5px 0 #ab9794;
+    transition: all 0.2s;
+
+    &.up {
+      box-shadow: 0 -3px 5px 0 #ab9794;
+    }
+    &.down {
+      box-shadow: 0 3px 5px 0 #ab9794;
+    }
+    &.left {
+      box-shadow: -3px 0 5px 0 #ab9794;
+    }
+    &.right {
+      box-shadow: 3px 0 5px 0 #ab9794;
+    }
+
     .tile {
       width: 60px;
       border: 1px solid transparent;
