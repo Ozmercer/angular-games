@@ -181,7 +181,6 @@ export class Twenty48Component implements OnInit {
 
   setNewGame() {
     this.table = [];
-    this.uniqueTiles = 1;
     this.win = false;
     this.gameOver = false;
 
