@@ -15,7 +15,7 @@ interface Tile {
 export class Twenty48Component implements OnInit {
   table: Tile[] = [];
   score: number;
-  uniqueTiles: number;
+  highscore: number;
   changed: boolean;
   gameOver: boolean;
   testMode: boolean;
@@ -40,11 +40,11 @@ export class Twenty48Component implements OnInit {
 
   constructor() {
     this.score = 0;
-    this.uniqueTiles = 1;
     this.changed = false;
     this.gameOver = false;
     this.testMode = false;
     this.win = false;
+    this.highscore = +localStorage.getItem('highscore') || 0;
   }
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class Twenty48Component implements OnInit {
     const emptyTiles = this.table.filter(tile => !tile.value);
     const randomIdx = Math.floor(Math.random() * emptyTiles.length);
     const randomEmptyTile = emptyTiles[randomIdx];
-    randomEmptyTile.value = 2 ** Math.floor(Math.random() * (this.uniqueTiles) + 1);
+    randomEmptyTile.value = this.score < 2 ? 2 : 2 ** Math.floor(Math.random() * 2 + 1);
 
     this.changed = false;
   }
@@ -149,9 +149,10 @@ export class Twenty48Component implements OnInit {
       if (prevTile.value === 2048) {
         this.win = true;
       }
-      // new tile can be up to 3 steps less than highest current tile
-      if (prevTile.value > 2 ** (this.uniqueTiles + 3)) {
-        this.uniqueTiles++;
+      this.score += prevTile.value;
+      if (this.score > this.highscore) {
+        this.highscore = this.score;
+        localStorage.highscore = this.highscore;
       }
       this.changed = true;
       this.moveTo(row, col, prevTile, direction);
