@@ -18,20 +18,20 @@
     margin: 20px auto;
     user-select: none;
     border: 1px solid orangered;
-    box-shadow: 0 0 5px 0 #ab9794;
+    box-shadow: 0 0 5px 1px #d27a71;
     transition: all 0.2s;
 
     &.up {
-      box-shadow: 0 -3px 5px 0 #ab9794;
+      box-shadow: 0 -4px 5px 0 #ab9164;
     }
     &.down {
-      box-shadow: 0 3px 5px 0 #ab9794;
+      box-shadow: 0 4px 5px 0 #ab9164;
     }
     &.left {
-      box-shadow: -3px 0 5px 0 #ab9794;
+      box-shadow: -4px 0 5px 0 #ab9164;
     }
     &.right {
-      box-shadow: 3px 0 5px 0 #ab9794;
+      box-shadow: 4px 0 5px 0 #ab9164;
     }
 
     .tile {

@@ -23,25 +23,21 @@ export class Twenty48Component implements OnInit {
   testMode: boolean;
   win: boolean;
   tilt: string;
+  actionKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'];
 
   @HostListener('document:keydown', ['$event'])
+  @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (
-      !this.gameOver
-      && (event.key === 'ArrowDown'
-      || event.key === 'ArrowUp'
-      || event.key === 'ArrowLeft'
-      || event.key === 'ArrowRight'
-      || event.key === 'w'
-      || event.key === 'a'
-      || event.key === 's'
-      || event.key === 'd')
+      event.type === 'keydown'
+      && !this.gameOver
+      && this.actionKeys.includes(event.key)
     ) {
       event.preventDefault();
       this.play(event.key);
-      setTimeout(() => {
-        this.tilt = null;
-      }, 150);
+    }
+    if (event.type === 'keyup' && this.actionKeys.includes(event.key)) {
+      this.tilt = null;
     }
   }
 
