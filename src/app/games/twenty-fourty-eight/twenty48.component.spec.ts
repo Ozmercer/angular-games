@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Twenty48Component} from './twenty48.component';
 import {FireworksComponent} from '../../shared/components/fireworks/fireworks.component';
 
-describe('TwentyFourtyEightComponent', () => {
+fdescribe('TwentyFourtyEightComponent', () => {
   let component: Twenty48Component;
   let fixture: ComponentFixture<Twenty48Component>;
 
@@ -153,11 +153,16 @@ describe('TwentyFourtyEightComponent', () => {
       expect(findTile(...destination).value).toEqual(5);
     };
 
-    it('should add a new tile after a move', () => {
+    it('should add a new tile after a move and mark it as new only on first appearance', () => {
       expect(component.table.filter(tile => tile.value).length).toEqual(1);
       document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
       fixture.detectChanges();
       expect(component.table.filter(tile => tile.value).length).toEqual(2);
+      expect(component.table.filter(tile => tile.isNew).length).toEqual(1);
+
+      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+      console.log(component.table);
+      expect(component.table.filter(tile => tile.isNew).length).toEqual(1);
     });
   });
 
@@ -170,43 +175,48 @@ describe('TwentyFourtyEightComponent', () => {
     it('should merge two adjacent tiles of the same value', () => {
       expect(findTile(0, 0).value).toEqual(2);
       expect(findTile(0, 1).value).toEqual(2);
+
       document.dispatchEvent(new KeyboardEvent('keydown', {key: 'a'}));
+
       expect(findTile(0, 0).value).toEqual(4);
-      expect([null, 2]).toContain(findTile(0, 1).value);
+      expect(findTile(0, 0).isMerged).toEqual(true);
+      expect([null, 2, 4]).toContain(findTile(0, 1).value);
     });
 
     it('should merge two non-adjacent tiles of the same value', () => {
       expect(findTile(1, 2).value).toEqual(4);
       expect(findTile(3, 2).value).toEqual(4);
+
       document.dispatchEvent(new KeyboardEvent('keydown', {key: 's'}));
-      expect([null, 2]).toContain(findTile(1, 2).value);
+
+      expect([null, 2, 4]).toContain(findTile(1, 2).value);
       expect(findTile(3, 2).value).toEqual(8);
+      expect(findTile(3, 2).isMerged).toEqual(true);
     });
 
     it('should not move tile if adjacent tile is of different value', () => {
       expect(findTile(0, 0).value).toEqual(2);
       expect(findTile(1, 0).value).toEqual(8);
+
       document.dispatchEvent(new KeyboardEvent('keydown', {key: 'w'}));
-      expect(findTile(0, 0).value).toEqual(2);
+
+      expect([null, 2, 4]).toContain(findTile(0, 0).value);
       expect(findTile(1, 0).value).toEqual(8);
+      expect(findTile(1, 0).isMerged).toBeFalsy();
     });
 
     it('should stop on tile if non-adjacent tile is of different value', () => {
       expect(findTile(1, 0).value).toEqual(8);
       expect(findTile(1, 2).value).toEqual(4);
-      expect([null, 2]).toContain(findTile(1, 3).value);
+      expect(findTile(1, 3).value).toEqual(null);
+
       document.dispatchEvent(new KeyboardEvent('keydown', {key: 'd'}));
-      expect(findTile(1, 0).value).toEqual(null);
+
+      expect([null, 2, 4]).toContain(findTile(1, 0).value);
       expect(findTile(1, 2).value).toEqual(8);
+      expect(findTile(1, 2).isMerged).toBeFalsy();
       expect(findTile(1, 3).value).toEqual(4);
-    });
-
-    it('should raise the uniqueTiles counter if creating a new highest tile', () => {
-      component.table = winTable.map(tile => ({...tile}));
-      expect(component.uniqueTiles).toEqual(1);
-
-      document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
-      expect(component.uniqueTiles).toEqual(2);
+      expect(findTile(1, 3).isMerged).toBeFalsy();
     });
   });
 
@@ -221,10 +231,19 @@ describe('TwentyFourtyEightComponent', () => {
   });
 
   it('should reset board on clicking button', () => {
+    localStorage.highscore = 9999;
     component.table = gameOverTable.map(tile => ({...tile}));
+    component.win = true;
+    component.gameOver = true;
+
     expect(component.table.filter(tile => tile.value).length).toEqual(15);
     fixture.nativeElement.querySelector('.reset').click();
+
     expect(component.table.filter(tile => tile.value).length).toEqual(2);
+    expect(component.win).toEqual(false);
+    expect(component.gameOver).toEqual(false);
+    expect(component.score).toEqual(0);
+    expect(component.highscore = 9999);
   });
 
   it('should win game once getting 2048', () => {
@@ -235,7 +254,12 @@ describe('TwentyFourtyEightComponent', () => {
     document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
     fixture.detectChanges();
 
+    const modal = fixture.nativeElement.querySelector('.win-modal');
     expect(component.win).toEqual(true);
-    expect(fixture.nativeElement.querySelector('.win-modal')).toBeTruthy();
+    expect(modal).toBeTruthy();
+
+    modal.click();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.win-modal')).toBeFalsy();
   });
 });

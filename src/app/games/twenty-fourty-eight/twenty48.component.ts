@@ -1,11 +1,11 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 
-interface Tile {
+export interface Tile {
   row: number;
   col: number;
   value: number;
-  isNew: boolean;
-  isMerged: boolean;
+  isNew?: boolean;
+  isMerged?: boolean;
 }
 
 @Component({
