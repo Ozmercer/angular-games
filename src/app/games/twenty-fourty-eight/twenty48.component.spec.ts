@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {Twenty48Component} from './twenty48.component';
 import {FireworksComponent} from '../../shared/components/fireworks/fireworks.component';
 
-fdescribe('TwentyFourtyEightComponent', () => {
+describe('TwentyFourtyEightComponent', () => {
   let component: Twenty48Component;
   let fixture: ComponentFixture<Twenty48Component>;
 
