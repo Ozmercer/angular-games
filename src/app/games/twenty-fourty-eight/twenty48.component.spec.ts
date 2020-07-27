@@ -50,11 +50,11 @@ describe('TwentyFourtyEightComponent', () => {
   ];
 
   const gameOverTable = [
-    {row: 0, col: 0, value: 1},
-    {row: 0, col: 1, value: 3},
-    {row: 0, col: 2, value: 4},
-    {row: 0, col: 3, value: 5},
-    {row: 1, col: 0, value: 6},
+    {row: 0, col: 0, value: 1},         // Preview:
+    {row: 0, col: 1, value: 3},         //  1  | 3  | 4  | 5
+    {row: 0, col: 2, value: 4},         //  6  | 7  | 9  | 10
+    {row: 0, col: 3, value: 5},         //  11 | 12 | 13 | 14
+    {row: 1, col: 0, value: 6},         //  15 | 17 | 18 | -
     {row: 1, col: 1, value: 7},
     {row: 1, col: 2, value: 9},
     {row: 1, col: 3, value: 10},
@@ -125,23 +125,35 @@ describe('TwentyFourtyEightComponent', () => {
 
       switch (direction) {
         case 'up':
-        case 'w':
           arrowKey = 'ArrowUp';
           destination = [0, 2];
           break;
+        case 'w':
+          arrowKey = 'w';
+          destination = [0, 2];
+          break;
         case 'down':
-        case 's':
           arrowKey = 'ArrowDown';
           destination = [3, 2];
           break;
+        case 's':
+          arrowKey = 's';
+          destination = [3, 2];
+          break;
         case 'left':
-        case 'a':
           arrowKey = 'ArrowLeft';
           destination = [1, 0];
           break;
+        case 'a':
+          arrowKey = 'a';
+          destination = [1, 0];
+          break;
         case 'right':
-        case 'd':
           arrowKey = 'ArrowRight';
+          destination = [1, 3];
+          break;
+        case 'd':
+          arrowKey = 'd';
           destination = [1, 3];
           break;
       }

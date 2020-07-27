@@ -3,12 +3,18 @@
 
   .logo img {
     margin-top: 20px;
-    height: 150px;
+    height: 130px;
   }
 
   .titles {
     height: 100px;
     padding: 10px;
+
+    .game-over {
+      font-weight: 500;
+      font-size: 2rem;
+      color: red;
+    }
   }
 
   .board {
