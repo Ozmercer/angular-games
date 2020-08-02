@@ -20,7 +20,7 @@ import * as hammer from 'hammerjs';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = {
-    swipe: { direction: hammer.DIRECTION_HORIZONTAL },
+    swipe: { direction: hammer.DIRECTION_ALL },
   };
 }
 

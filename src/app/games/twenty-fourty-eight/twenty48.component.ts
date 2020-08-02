@@ -206,8 +206,4 @@ export class Twenty48Component implements OnInit {
     this.addTile();
     this.addTile();
   }
-
-  swipe(e: Event) {
-    console.log(e);
-  }
 }
