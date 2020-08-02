@@ -1,4 +1,4 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig, HammerModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -16,6 +16,13 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { Twenty48Component } from './games/twenty-fourty-eight/twenty48.component';
 import { FireworksComponent } from './shared/components/fireworks/fireworks.component';
+import * as hammer from 'hammerjs';
+
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = {
+    swipe: { direction: hammer.DIRECTION_HORIZONTAL },
+  };
+}
 
 @NgModule({
   declarations: [
@@ -37,8 +44,12 @@ import { FireworksComponent } from './shared/components/fireworks/fireworks.comp
     MatCheckboxModule,
     MatIconModule,
     MatTooltipModule,
+    HammerModule,
   ],
-  providers: [],
+  providers: [{
+    provide: HAMMER_GESTURE_CONFIG,
+    useClass: MyHammerConfig,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

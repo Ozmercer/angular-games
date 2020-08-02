@@ -26,7 +26,7 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
 
     ● If a healthy monkey has 3 neighboring infected cells, he will also get infected.
 
-    ● if an infected monkey has less than 2 infected neighbours, he will get cured thanks to social distancing.
+    ● if an infected monkey has 2 or less infected neighbours, he will get cured thanks to social distancing.
 
     ● If an infected monkey has more than 3 infected neighbours, he will be cured because of medical hot-spot treatment.
     `;

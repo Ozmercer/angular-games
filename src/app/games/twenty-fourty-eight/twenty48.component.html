@@ -8,7 +8,7 @@
     <h2>Use arrow keys to move and combine tiles. Try to reach 2048!</h2>
     <h1 *ngIf="gameOver" class="game-over">GAME OVER</h1>
   </div>
-  <div class="board" [ngClass]="tilt">
+  <div class="board" [ngClass]="tilt" (swipeleft)="swipe($event)">
     <div *ngFor="let tile of table" class="tile tile--{{tile.value || 0}}" [ngClass]="{merged: tile.isMerged, new: tile.isNew}">
       {{tile.value}}
     </div>
