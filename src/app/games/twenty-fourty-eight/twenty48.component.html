@@ -24,6 +24,9 @@
   </div>
   <div class="score">SCORE: {{score}}</div>
   <div class="highscore">SCORE: {{highscore}}</div>
+  <span class="tooltip-wrapper" [matTooltip]="score > 0 && gameHistory.length === 0 ? 'You can only go back 2 moves!' : ''" matTooltipClass="undo-tooltip">
+    <button class="reset" mat-button color="primary" (click)="undo()" [disabled]="!gameHistory.length">UNDO</button>
+  </span>
   <button class="reset" mat-button color="warn" (click)="setNewGame()">RESET</button>
 </div>
 

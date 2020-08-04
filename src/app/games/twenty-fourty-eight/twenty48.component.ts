@@ -15,7 +15,8 @@ export interface Tile {
 })
 
 export class Twenty48Component implements OnInit {
-  table: Tile[] = [];
+  table: Tile[];
+  gameHistory: { table: Tile[], score: number }[];
   score: number;
   highscore: number;
   changed: boolean;
@@ -42,6 +43,8 @@ export class Twenty48Component implements OnInit {
   }
 
   constructor() {
+    this.table = [];
+    this.gameHistory = [];
     this.score = 0;
     this.changed = false;
     this.gameOver = false;
@@ -73,6 +76,9 @@ export class Twenty48Component implements OnInit {
   }
 
   play(direction) {
+    const prevTable = this.table.map(tile => ({...tile}));
+    const prevScore = this.score;
+
     switch (direction) {
       case 'ArrowUp':
       case 'w':
@@ -105,6 +111,10 @@ export class Twenty48Component implements OnInit {
     }
     if (!this.testMode && this.changed) {
       this.addTile();
+      this.gameHistory.push({table: prevTable, score: prevScore});
+      if (this.gameHistory.length > 2) {
+        this.gameHistory.shift();
+      }
     }
 
     if (!this.testMode && !this.table.find(tile => tile.value === null)) {
@@ -194,6 +204,7 @@ export class Twenty48Component implements OnInit {
 
   setNewGame() {
     this.table = [];
+    this.gameHistory = [];
     this.win = false;
     this.gameOver = false;
     this.score = 0;
@@ -205,5 +216,12 @@ export class Twenty48Component implements OnInit {
     }
     this.addTile();
     this.addTile();
+  }
+
+  undo() {
+    const {table, score} = this.gameHistory.pop();
+    this.table = table;
+    this.score = score;
+    this.gameOver = false;
   }
 }
