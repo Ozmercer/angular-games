@@ -16,13 +16,13 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { Twenty48Component } from './games/twenty-fourty-eight/twenty48.component';
 import { FireworksComponent } from './shared/components/fireworks/fireworks.component';
-import * as hammer from 'hammerjs';
+// import * as hammer from 'hammerjs';
 
-export class MyHammerConfig extends HammerGestureConfig {
-  overrides = {
-    swipe: { direction: hammer.DIRECTION_ALL },
-  };
-}
+// export class MyHammerConfig extends HammerGestureConfig {
+//   overrides = {
+//     swipe: { direction: hammer.DIRECTION_ALL },
+//   };
+// }
 
 @NgModule({
   declarations: [
@@ -46,10 +46,10 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatTooltipModule,
     HammerModule,
   ],
-  providers: [{
-    provide: HAMMER_GESTURE_CONFIG,
-    useClass: MyHammerConfig,
-  }],
+  // providers: [{
+  //   provide: HAMMER_GESTURE_CONFIG,
+  //   useClass: MyHammerConfig,
+  // }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
