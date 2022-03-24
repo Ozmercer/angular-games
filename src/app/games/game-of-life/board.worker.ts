@@ -6,7 +6,7 @@ interface Cell {
   alive: boolean;
 }
 
-let boardSize = 10;
+let boardSize = 31;
 let currentField: Cell[] = [];
 
 function buildField() {
