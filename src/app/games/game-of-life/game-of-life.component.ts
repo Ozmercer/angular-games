@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BoardService, Cell} from './board.service';
+import {BoardService} from './board.service';
+import {GOLCell} from './interfaces';
 
 @Component({
   selector: 'app-game-of-life',
@@ -71,7 +72,7 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
     clearInterval(this.interval);
   }
 
-  onDraw(cell: Cell, ev: MouseEvent) {
+  onDraw(cell: GOLCell, ev: MouseEvent) {
     if (ev.buttons === 0) {
       return;
     }

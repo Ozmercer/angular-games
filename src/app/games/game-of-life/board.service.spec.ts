@@ -1,47 +1,35 @@
 import {BoardService} from './board.service';
+import {GOLMocks} from './mocks';
 
 describe('Board Service', () => {
   let service: BoardService;
-  let mockField;
-  const resetMockField = () => {
-    mockField = [];
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        mockField.push({row: i, col: j, alive: false});
-      }
-    }
-    return mockField;
-  };
 
   beforeEach(() => {
     service = new BoardService();
-    service.field = resetMockField();
+    service.BOARD_SIZE = 3;
+    service.field = GOLMocks.generate3X3Field();
     service.initField();
   });
 
-  it('should initiate web worker', () => {
-    expect(service.worker).toBeTruthy();
-  });
 
   it('should calculate field', () => {
-    spyOn(service.worker, 'postMessage');
-    service.field = mockField;
+    service.field = GOLMocks.generate3X3Field([[0,0],[0,2],[2,1]]);
+
     service.calculateField();
-    expect(service.worker.postMessage).toHaveBeenCalledWith({message: 'updateField', prevField: mockField});
+    expect(service.field).toEqual(GOLMocks.generate3X3Field([[1,1]]));
+
+    service.calculateField();
+    expect(service.field).toEqual(GOLMocks.generate3X3Field());
   });
 
   it('should build field', () => {
-    spyOn(service.worker, 'postMessage');
-    service.field = mockField;
-    service.buildField();
-    expect(service.worker.postMessage).toHaveBeenCalledWith({message: 'buildField', boardSize: service.BOARD_SIZE});
+    expect(service.generateField()).toEqual(GOLMocks.generate3X3Field());
   });
 
   it('should clear field', () => {
-    spyOn(service.worker, 'postMessage');
-    service.field = mockField;
+    service.field = GOLMocks.generate3X3Field([[0,0],[0,2],[2,1]]);
     service.clearGame();
-    expect(service.worker.postMessage).toHaveBeenCalledWith({message: 'buildField', boardSize: service.BOARD_SIZE});
+    expect(service.generateField()).toEqual(GOLMocks.generate3X3Field());
   });
 
   it('should randomly fill field', () => {
@@ -91,43 +79,43 @@ describe('Board Service', () => {
     expect(service.field.filter(cell => cell.col === cell.row).find(cell => !cell.alive)).toBeFalsy();
   });
 
-  it('should fill tiles', () => {
-    const size = 3;
-    service.fillTiles(size);
-    expect(service.field
-      .filter(cell => (cell.col % size && !(cell.row % size)) || (cell.row % size && !(cell.col % size)))
-      .find(cell => !cell.alive)).toBeFalsy();
-  });
+  [3,4,5,6].forEach(size => {
+    it(`should fill tiles of size ${size}`, () => {
+      service.fillTiles(size);
+      expect(service.field
+        .filter(cell => (cell.col % size && !(cell.row % size)) || (cell.row % size && !(cell.col % size)))
+        .find(cell => !cell.alive)).toBeFalsy();
+    });
 
-  it('should fill cols', () => {
-    const size = 3;
-    service.fillLines(size);
-    expect(service.field
-      .filter(cell => cell.col % size === 0)
-      .find(cell => !cell.alive)).toBeFalsy();
-  });
+    it(`should fill cols of size ${size}`, () => {
+      service.fillLines(size);
+      expect(service.field
+        .filter(cell => cell.col % size === 0)
+        .find(cell => !cell.alive)).toBeFalsy();
+    });
 
-  it('should fill rows', () => {
-    const size = 3;
-    service.fillLines(size, false);
-    expect(service.field
-      .filter(cell => cell.row % size === 0)
-      .find(cell => !cell.alive)).toBeFalsy();
-  });
+    it(`should fill rows of size ${size}`, () => {
+      service.fillLines(size, false);
+      expect(service.field
+        .filter(cell => cell.row % size === 0)
+        .find(cell => !cell.alive)).toBeFalsy();
+    });
 
-  it('should fill pattern', () => {
-    const size = 3;
-    service.fillPatter(size);
-    expect(service.field.filter((cell, i) => i % size === 0)
-      .find(cell => !cell.alive)).toBeFalsy();
-  });
+    it(`should fill pattern of size ${size}`, () => {
+      service.fillPatter(size);
+      expect(service.field.filter((cell, i) => i % size === 0)
+        .find(cell => !cell.alive)).toBeFalsy();
+    });
+  })
 
   it('should game over when board is all dead', () => {
+    service.field = GOLMocks.generate3X3Field();
     expect(service.checkGameOver()).toEqual(true);
   });
 
   it('should game over when no changes', () => {
-    service.field[0].alive = true;
+    service.field = GOLMocks.generate3X3Field([[0,0]]);
+
     service.changed = true;
     expect(service.checkGameOver()).toEqual(false);
 

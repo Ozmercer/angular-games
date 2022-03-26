@@ -22,7 +22,7 @@
           Auto fill
           <input type="range" [(ngModel)]="fillPercent">
           <span>
-            <input type="number" [(ngModel)]="fillPercent" min="0" max="100" style="width: fit-content;">
+            <input matInput type="number" [(ngModel)]="fillPercent" min="0" max="100">
             %
           </span>
         </label>
@@ -52,7 +52,7 @@
         <label>
           <span>
           Size:
-            <input type="number" min="1" [(ngModel)]="boardService.tileSize" style="width: 50px;">
+            <input matInput type="number" min="1" [(ngModel)]="boardService.tileSize" autocomplete="off">
           </span>
           <button mat-button (click)="boardService.fillTiles(boardService.tileSize + 1)">Add Tiles</button>
         </label>
@@ -60,7 +60,7 @@
         <label>
           <span>
             Size:
-            <input type="number" min="2" [(ngModel)]="boardService.colSpread" style="width: 50px;">
+            <input matInput type="number" min="2" [(ngModel)]="boardService.colSpread" autocomplete="off">
           </span>
           <button mat-button (click)="boardService.fillLines(boardService.colSpread)">Add Columns</button>
         </label>
@@ -68,7 +68,7 @@
         <label>
           <span>
             Size:
-            <input type="number" min="2" [(ngModel)]="boardService.rowSpread" style="width: 50px;">
+            <input matInput type="number" min="2" [(ngModel)]="boardService.rowSpread" autocomplete="off">
           </span>
           <button mat-button (click)="boardService.fillLines(boardService.rowSpread, false)">Add Rows</button>
         </label>
@@ -76,8 +76,8 @@
         <label>
           <span>
             Size:
-            <input (input)="boardService.fillPatter($event.target.value)" [(ngModel)]="boardService.pattern" min="1" style="width: 50px;"
-                   type="number">
+            <input matInput (input)="boardService.fillPatter($event.target.value)" [(ngModel)]="boardService.pattern" min="1"
+                   type="number" autocomplete="off">
           </span>
           <button mat-button (click)="boardService.fillPatter(boardService.pattern)">Pattern</button>
         </label>
@@ -107,7 +107,7 @@
     <div class="field-wrapper">
       <strong *ngIf="gameOver" class="game-over">GAME OVER! </strong>
       <div class="field"
-           [ngStyle]="{'grid-template-columns': 'repeat(' + boardService.BOARD_SIZE + ', 1fr)', width: 24 * boardService.BOARD_SIZE + 'px'}">
+           [ngStyle]="{'grid-template-columns': 'repeat(' + boardService.BOARD_SIZE + ', 1fr)', width: 20 * boardService.BOARD_SIZE + 'px'}">
         <div class="cells" *ngFor="let cell of boardService.field">
           <app-cell (mouseover)="onDraw(cell, $event)" (mousedown)="onDraw(cell, $event)" [alive]="cell.alive">
           </app-cell>

@@ -16,6 +16,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { Twenty48Component } from './games/twenty-fourty-eight/twenty48.component';
 import { FireworksComponent } from './shared/components/fireworks/fireworks.component';
+import {MatInputModule} from '@angular/material/input';
 // import * as hammer from 'hammerjs';
 
 // export class MyHammerConfig extends HammerGestureConfig {
@@ -35,17 +36,18 @@ import { FireworksComponent } from './shared/components/fireworks/fireworks.comp
     Twenty48Component,
     FireworksComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatTooltipModule,
-    HammerModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatIconModule,
+        MatTooltipModule,
+        HammerModule,
+        MatInputModule,
+    ],
   // providers: [{
   //   provide: HAMMER_GESTURE_CONFIG,
   //   useClass: MyHammerConfig,

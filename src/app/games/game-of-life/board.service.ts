@@ -1,59 +1,32 @@
 import {Injectable} from '@angular/core';
-
-export interface Cell {
-  row: number;
-  col: number;
-  alive: boolean;
-}
+import {GOLCell} from './interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardService {
-  field: Cell[] = [];
+  BOARD_SIZE = 37;
   changed = false;
-  BOARD_SIZE = 30;
-  worker: Worker;
-  toggleMode = false;
-  tileSize = 1;
   colSpread = 2;
-  rowSpread = 2;
+  field: GOLCell[] = [];
   pattern = 1;
-
-  constructor() {
-  }
+  rowSpread = 2;
+  tileSize = 1;
+  toggleMode = false;
 
   initField() {
-    if (typeof Worker !== 'undefined') {
-      // Create a new
-      this.worker = new Worker('./board.worker', {type: 'module'});
-      this.worker.onmessage = ({data}) => {
-        if (data.message === 'updateField') {
-          this.changed = data.changed;
-          this.field = data.body;
-        } else {
-          console.log('caught: ' + data.message);
-        }
-      };
-    } else {
-      alert('This app does not work on your browser. Please try a more modern version');
-      // Web Workers are not supported in this environment.
-      // You should add a fallback so that your program still executes correctly.
-    }
-    this.field = this.buildField();
+    this.field = this.generateField();
   }
 
   unregister() {
     this.initField();
-    this.worker.terminate();
   }
 
   calculateField() {
-    // this.worker.postMessage({message: 'updateField', prevField: this.field});
-    const newField: Cell[] = this.buildField();
+    const newField: GOLCell[] = this.generateField();
     let changed = false;
     this.field.forEach((cell, index) => {
-      const neighbours = this.livingNeighboursCount(cell);
+      const neighbours: number = this.livingNeighboursCount(cell);
       if (neighbours < 2) {
         newField[index].alive = false;
       } else if (neighbours > 3) {
@@ -72,7 +45,7 @@ export class BoardService {
     this.changed = changed
   }
 
-  livingNeighboursCount(cell) {
+  livingNeighboursCount(cell: GOLCell): number {
     let counter = 0;
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
@@ -90,12 +63,11 @@ export class BoardService {
     return counter;
   }
 
-  findCell(row: number, col: number) {
+  findCell(row: number, col: number): GOLCell {
     return this.field[row * this.BOARD_SIZE + col];
   }
 
-  buildField(): Cell[] {
-    // this.worker.postMessage({message: 'buildField', boardSize: this.BOARD_SIZE});
+  generateField(): GOLCell[] {
     const field = [];
     for (let i = 0; i < this.BOARD_SIZE; i++) {
       for (let j = 0; j < this.BOARD_SIZE; j++) {
@@ -106,33 +78,31 @@ export class BoardService {
   }
 
   randomFill(fillPercent: number) {
-    this.field.forEach(cell => {
-      cell.alive = Math.random() < (fillPercent / 100);
-    });
+    this.field.forEach(cell => cell.alive = Math.random() < (fillPercent / 100));
   }
 
   fillEdges(side = 'all') {
-    const topRow = (cell: Cell) => cell.row === 0;
-    const bottomRow = (cell: Cell) => cell.row === this.BOARD_SIZE - 1;
-    const leftCol = (cell: Cell) => cell.col === 0;
-    const rightCol = (cell: Cell) => cell.col === this.BOARD_SIZE - 1;
+    const topRow = (cell: GOLCell) => cell.row === 0;
+    const bottomRow = (cell: GOLCell) => cell.row === this.BOARD_SIZE - 1;
+    const leftCol = (cell: GOLCell) => cell.col === 0;
+    const rightCol = (cell: GOLCell) => cell.col === this.BOARD_SIZE - 1;
 
     let condition;
     switch (side) {
       case 'top':
-        condition = (cell: Cell) => topRow(cell);
+        condition = (cell: GOLCell) => topRow(cell);
         break;
       case 'bottom':
-        condition = (cell: Cell) => bottomRow(cell);
+        condition = (cell: GOLCell) => bottomRow(cell);
         break;
       case 'left':
-        condition = (cell: Cell) => leftCol(cell);
+        condition = (cell: GOLCell) => leftCol(cell);
         break;
       case 'right':
-        condition = (cell: Cell) => rightCol(cell);
+        condition = (cell: GOLCell) => rightCol(cell);
         break;
       default:
-        condition = (cell: Cell) => topRow(cell) || bottomRow(cell) || leftCol(cell) || rightCol(cell)
+        condition = (cell: GOLCell) => topRow(cell) || bottomRow(cell) || leftCol(cell) || rightCol(cell)
     }
 
     this.field.forEach(cell => {
@@ -173,7 +143,7 @@ export class BoardService {
   }
 
   clearGame() {
-    this.field = this.buildField();
+    this.field = this.generateField();
   }
 
   checkGameOver(): boolean {

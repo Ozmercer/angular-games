@@ -2,6 +2,7 @@ import {async, ComponentFixture, fakeAsync, flush, TestBed, tick} from '@angular
 
 import {TicTacToeComponent} from './tic-tac-toe.component';
 import {MatButtonModule} from '@angular/material/button';
+import {TTTMark} from './interfaces';
 
 describe('GameComponent', () => {
   let component: TicTacToeComponent;
@@ -27,18 +28,18 @@ describe('GameComponent', () => {
 
   it('should reset the board when clicking reset', function () {
     component.squares = [
-      {mark: 'X'},
-      {mark: 'X'},
-      {mark: 'X'},
+      {mark: TTTMark.X},
+      {mark: TTTMark.X},
+      {mark: TTTMark.X},
       {mark: null},
-      {mark: 'O'},
-      {mark: 'O'},
-      {mark: 'O'},
+      {mark: TTTMark.O},
+      {mark: TTTMark.O},
+      {mark: TTTMark.O},
       {mark: null},
-      {mark: 'X'},
+      {mark: TTTMark.X},
     ];
     component.isX = false;
-    component.winner = 'X';
+    component.winner = TTTMark.X;
 
     component.resetGame();
 
@@ -59,26 +60,26 @@ describe('GameComponent', () => {
     component.twoPlayerMode = true;
     const compiled = fixture.nativeElement;
     compiled.querySelectorAll('.square')[0].click();
-    expect(component.squares[0].mark).toEqual('X');
+    expect(component.squares[0].mark).toEqual(TTTMark.X);
     compiled.querySelectorAll('.square')[1].click();
-    expect(component.squares[1].mark).toEqual('O');
+    expect(component.squares[1].mark).toEqual(TTTMark.O);
   });
 
   it('should prevent clicking when computer is thinking on 1 player mode', fakeAsync(() => {
     component.twoPlayerMode = false;
     const compiled = fixture.nativeElement;
     compiled.querySelectorAll('.square')[0].click();
-    expect(component.squares[0].mark).toEqual('X');
+    expect(component.squares[0].mark).toEqual(TTTMark.X);
     compiled.querySelectorAll('.square')[1].click();
     expect(component.squares[1].mark).toEqual(null);
 
     tick(500);
     fixture.detectChanges();
-    expect(component.squares.find(cell => cell.mark === 'O')).toBeTruthy();
+    expect(component.squares.find(cell => cell.mark === TTTMark.O)).toBeTruthy();
 
     const freeCellId = component.squares.findIndex(cell => !cell.mark);
     compiled.querySelectorAll('.square')[freeCellId].click();
-    expect(component.squares[freeCellId].mark).toEqual('X');
+    expect(component.squares[freeCellId].mark).toEqual(TTTMark.X);
 
     flush();
   }));
@@ -96,7 +97,7 @@ describe('GameComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.winner).toEqual('X');
+    expect(component.winner).toEqual(TTTMark.X);
     expect(compiled.querySelector('.player').innerText).toEqual('X WINS!');
 
     squares[5].click();
@@ -138,7 +139,7 @@ describe('GameComponent', () => {
       squares[6].click();
 
       tick(500);
-      expect(component.winner).toEqual('O');
+      expect(component.winner).toEqual(TTTMark.O);
     }));
 
     it('should make block move if possible and can\'t win', fakeAsync(() => {
@@ -151,7 +152,7 @@ describe('GameComponent', () => {
       compiled.querySelectorAll('.square')[4].click();
 
       tick(500);
-      expect(component.squares[8].mark).toEqual('O');
+      expect(component.squares[8].mark).toEqual(TTTMark.O);
     }));
   });
 });

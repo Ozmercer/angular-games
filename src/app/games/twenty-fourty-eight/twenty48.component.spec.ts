@@ -2,6 +2,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {Twenty48Component} from './twenty48.component';
 import {FireworksComponent} from '../../shared/components/fireworks/fireworks.component';
+import {twenty48Mocks} from './mocks';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 describe('TwentyFourtyEightComponent', () => {
   let component: Twenty48Component;
@@ -11,85 +13,10 @@ describe('TwentyFourtyEightComponent', () => {
     return component.table.find(tile => tile.row === row && tile.col === col);
   };
 
-  const initialTable = [
-    {row: 0, col: 0, value: null},      // Preview:
-    {row: 0, col: 1, value: null},      //  - | - | - | -
-    {row: 0, col: 2, value: null},      //  - | - | 5 | -
-    {row: 0, col: 3, value: null},      //  - | - | - | -
-    {row: 1, col: 0, value: null},      //  - | - | - | -
-    {row: 1, col: 1, value: null},
-    {row: 1, col: 2, value: 5},
-    {row: 1, col: 3, value: null},
-    {row: 2, col: 0, value: null},
-    {row: 2, col: 1, value: null},
-    {row: 2, col: 2, value: null},
-    {row: 2, col: 3, value: null},
-    {row: 3, col: 0, value: null},
-    {row: 3, col: 1, value: null},
-    {row: 3, col: 2, value: null},
-    {row: 3, col: 3, value: null},
-  ];
-
-  const mergingTable = [
-    {row: 0, col: 0, value: 2},         // Preview:
-    {row: 0, col: 1, value: 2},         //  2 | 2 | - | -
-    {row: 0, col: 2, value: null},      //  8 | - | 4 | -
-    {row: 0, col: 3, value: null},      //  - | - | - | -
-    {row: 1, col: 0, value: 8},         //  - | - | 4 | -
-    {row: 1, col: 1, value: null},
-    {row: 1, col: 2, value: 4},
-    {row: 1, col: 3, value: null},
-    {row: 2, col: 0, value: null},
-    {row: 2, col: 1, value: null},
-    {row: 2, col: 2, value: null},
-    {row: 2, col: 3, value: null},
-    {row: 3, col: 0, value: null},
-    {row: 3, col: 1, value: null},
-    {row: 3, col: 2, value: 4},
-    {row: 3, col: 3, value: null},
-  ];
-
-  const gameOverTable = [
-    {row: 0, col: 0, value: 1},         // Preview:
-    {row: 0, col: 1, value: 3},         //  1  | 3  | 4  | 5
-    {row: 0, col: 2, value: 4},         //  6  | 7  | 9  | 10
-    {row: 0, col: 3, value: 5},         //  11 | 12 | 13 | 14
-    {row: 1, col: 0, value: 6},         //  15 | 17 | 18 | -
-    {row: 1, col: 1, value: 7},
-    {row: 1, col: 2, value: 9},
-    {row: 1, col: 3, value: 10},
-    {row: 2, col: 0, value: 11},
-    {row: 2, col: 1, value: 12},
-    {row: 2, col: 2, value: 13},
-    {row: 2, col: 3, value: 14},
-    {row: 3, col: 0, value: 15},
-    {row: 3, col: 1, value: 17},
-    {row: 3, col: 2, value: 18},
-    {row: 3, col: 3, value: null},
-  ];
-
-  const winTable = [
-    {row: 0, col: 0, value: null},      // Preview:
-    {row: 0, col: 1, value: null},      //  - | - | - | -
-    {row: 0, col: 2, value: null},      //  - | - | - | -
-    {row: 0, col: 3, value: null},      //  - | - | - | 1024
-    {row: 1, col: 0, value: null},      //  - | - | - | 1024
-    {row: 1, col: 1, value: null},
-    {row: 1, col: 2, value: null},
-    {row: 1, col: 3, value: null},
-    {row: 2, col: 0, value: null},
-    {row: 2, col: 1, value: null},
-    {row: 2, col: 2, value: null},
-    {row: 2, col: 3, value: 1024},
-    {row: 3, col: 0, value: null},
-    {row: 3, col: 1, value: null},
-    {row: 3, col: 2, value: null},
-    {row: 3, col: 3, value: 1024},
-  ];
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [Twenty48Component, FireworksComponent],
+      imports: [MatTooltipModule],
     })
       .compileComponents();
   }));
@@ -106,7 +33,7 @@ describe('TwentyFourtyEightComponent', () => {
 
   describe('Clicking arrow keys should move the tiles', () => {
     beforeEach(() => {
-      component.table = initialTable.map(tile => ({...tile}));
+      component.table = twenty48Mocks.initialTable.map(tile => ({...tile}));
       fixture.detectChanges();
     });
 
@@ -173,14 +100,13 @@ describe('TwentyFourtyEightComponent', () => {
       expect(component.table.filter(tile => tile.isNew).length).toEqual(1);
 
       document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
-      console.log(component.table);
       expect(component.table.filter(tile => tile.isNew).length).toEqual(1);
     });
   });
 
   describe('Merging and Blocking', () => {
     beforeEach(() => {
-      component.table = mergingTable.map(tile => ({...tile}));
+      component.table = twenty48Mocks.mergingTable.map(tile => ({...tile}));
       fixture.detectChanges();
     });
 
@@ -233,7 +159,7 @@ describe('TwentyFourtyEightComponent', () => {
   });
 
   it('should trigger game over when no moves left', () => {
-    component.table = gameOverTable.map(tile => ({...tile}));
+    component.table = twenty48Mocks.gameOverTable.map(tile => ({...tile}));
     expect(component.gameOver).toEqual(false);
     document.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight'}));
     fixture.detectChanges();
@@ -244,7 +170,7 @@ describe('TwentyFourtyEightComponent', () => {
 
   it('should reset board on clicking button', () => {
     localStorage.highscore = 9999;
-    component.table = gameOverTable.map(tile => ({...tile}));
+    component.table = twenty48Mocks.gameOverTable.map(tile => ({...tile}));
     component.win = true;
     component.gameOver = true;
 
@@ -259,7 +185,7 @@ describe('TwentyFourtyEightComponent', () => {
   });
 
   it('should win game once getting 2048', () => {
-    component.table = winTable.map(tile => ({...tile}));
+    component.table = twenty48Mocks.winTable.map(tile => ({...tile}));
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.win-modal')).toBeFalsy();
 

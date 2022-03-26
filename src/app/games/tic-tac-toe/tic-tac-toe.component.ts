@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {TTTCell, TTTMark} from './interfaces';
 
 @Component({
   selector: 'app-game',
@@ -8,16 +9,13 @@ import {Component, OnInit} from '@angular/core';
 
 export class TicTacToeComponent implements OnInit {
   isX: boolean;
-  squares: { mark: string }[];
+  squares: TTTCell[];
   winner: string;
   twoPlayerMode: boolean;
 
-  constructor() {
+  ngOnInit(): void {
     this.resetGame();
     this.twoPlayerMode = false;
-  }
-
-  ngOnInit(): void {
   }
 
   resetGame() {
@@ -30,16 +28,18 @@ export class TicTacToeComponent implements OnInit {
   }
 
   toggleGameMode(is2Player: boolean) {
-    this.twoPlayerMode = is2Player;
-    this.resetGame();
+    if (is2Player !== this.twoPlayerMode) {
+      this.twoPlayerMode = is2Player;
+      this.resetGame();
+    }
   }
 
-  onSquareClick(square, auto?: boolean) {
+  onSquareClick(square: TTTCell, auto?: boolean) {
     if (square?.mark || this.winner || (!this.twoPlayerMode && !this.isX && !auto)) {
       return;
     }
 
-    square.mark = this.isX ? 'X' : 'O';
+    square.mark = this.isX ? TTTMark.X : TTTMark.O;
     this.isX = !this.isX;
     this.winner = this.calculateWinner();
 
@@ -55,7 +55,7 @@ export class TicTacToeComponent implements OnInit {
     let nextMove = freeCells[Math.floor(Math.random() * freeCells.length)];   // Random cell
     freeCells.forEach(cell => {
       // Check if win move
-      cell.mark = 'O';
+      cell.mark = TTTMark.O;
       if (this.calculateWinner()) {
         cell.mark = null;
         this.onSquareClick(cell, true);
@@ -63,7 +63,7 @@ export class TicTacToeComponent implements OnInit {
       }
 
       // Check if can block
-      cell.mark = 'X';
+      cell.mark = TTTMark.X;
       if (this.calculateWinner()) {
         cell.mark = null;
         nextMove = cell;
@@ -73,7 +73,7 @@ export class TicTacToeComponent implements OnInit {
     this.onSquareClick(nextMove, true);
   }
 
-  calculateWinner() {
+  calculateWinner(): TTTMark | string {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -84,16 +84,18 @@ export class TicTacToeComponent implements OnInit {
       [0, 4, 8],
       [2, 4, 6],
     ];
-    // tslint:disable-next-line:prefer-for-of
+
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (this.squares[a].mark && this.squares[a].mark === this.squares[b].mark && this.squares[a].mark === this.squares[c].mark) {
         return this.squares[a].mark;
       }
     }
+
     if (!this.squares.find(cell => !cell.mark)) {
       return 'TIE! NOBODY';
     }
+
     return null;
   }
 }
