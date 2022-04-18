@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BoardService} from './board.service';
-import {GOLCell} from './interfaces';
+import {BoardSide, GOLCell} from './interfaces';
 
 @Component({
   selector: 'app-game-of-life',
@@ -15,8 +15,16 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
   tooltip: string;
   currentStreak: number;
   longestStreak: number;
+  isToggleMode = false;
+  side = BoardSide;
+  tileSize = this.boardService.tileSize.toString();
+  colSpread = this.boardService.colSpread.toString();
+  rowSpread = this.boardService.colSpread.toString();
+  patternSize = this.boardService.pattern.toString();
+  boardSize = this.boardService.BOARD_SIZE;
+  field = this.boardService.field$;
 
-  constructor(public boardService: BoardService) {
+  constructor(private boardService: BoardService) {
     this.started = false;
     this.fillPercent = 50;
     this.gameOver = false;
@@ -82,5 +90,30 @@ export class GameOfLifeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.clearGame();
     this.boardService.unregister();
+  }
+
+  setToggleMode() {
+    this.isToggleMode = !this.isToggleMode;
+    this.boardService.toggleMode = this.isToggleMode;
+  }
+
+  fillEdges(side: BoardSide) {
+    if (side === BoardSide.X) {
+      this.boardService.fillX();
+    } else {
+      this.boardService.fillEdges(side)
+    }
+  }
+
+  setTiles(size: string) {
+    this.boardService.fillTiles(+size + 1);
+  }
+
+  fillLines(spread: string, isColumn = true) {
+    this.boardService.fillLines(+spread, isColumn);
+  }
+
+  setPattern(size: string) {
+    this.boardService.fillPatter(+size);
   }
 }

@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
-import {GOLCell} from './interfaces';
+import {BoardSide, GOLCell} from './interfaces';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardService {
-  BOARD_SIZE = 37;
+  readonly BOARD_SIZE = 37;
   changed = false;
   colSpread = 2;
   field: GOLCell[] = [];
@@ -13,9 +14,12 @@ export class BoardService {
   rowSpread = 2;
   tileSize = 1;
   toggleMode = false;
+  field$: BehaviorSubject<GOLCell[]> = new BehaviorSubject<GOLCell[]>([]);
 
   initField() {
     this.field = this.generateField();
+    // TODO: create store and manipulate field from there
+    this.field$.next(this.field);
   }
 
   unregister() {
@@ -42,6 +46,7 @@ export class BoardService {
     });
 
     this.field = newField;
+    this.field$.next(this.field);
     this.changed = changed
   }
 
@@ -79,9 +84,10 @@ export class BoardService {
 
   randomFill(fillPercent: number) {
     this.field.forEach(cell => cell.alive = Math.random() < (fillPercent / 100));
+    this.field$.next(this.field);
   }
 
-  fillEdges(side = 'all') {
+  fillEdges(side: BoardSide = BoardSide.All) {
     const topRow = (cell: GOLCell) => cell.row === 0;
     const bottomRow = (cell: GOLCell) => cell.row === this.BOARD_SIZE - 1;
     const leftCol = (cell: GOLCell) => cell.col === 0;
@@ -89,16 +95,16 @@ export class BoardService {
 
     let condition;
     switch (side) {
-      case 'top':
+      case BoardSide.Top:
         condition = (cell: GOLCell) => topRow(cell);
         break;
-      case 'bottom':
+      case BoardSide.Bottom:
         condition = (cell: GOLCell) => bottomRow(cell);
         break;
-      case 'left':
+      case BoardSide.Left:
         condition = (cell: GOLCell) => leftCol(cell);
         break;
-      case 'right':
+      case BoardSide.Right:
         condition = (cell: GOLCell) => rightCol(cell);
         break;
       default:
@@ -110,6 +116,7 @@ export class BoardService {
         cell.alive = this.toggleMode ? !cell.alive : true;
       }
     });
+    this.field$.next(this.field);
   }
 
   fillX() {
@@ -118,6 +125,7 @@ export class BoardService {
         cell.alive = this.toggleMode ? !cell.alive : true;
       }
     });
+    this.field$.next(this.field);
   }
 
   fillTiles(size: number) {
@@ -126,6 +134,7 @@ export class BoardService {
         cell.alive = this.toggleMode ? !cell.alive : true;
       }
     });
+    this.field$.next(this.field);
   }
 
   fillLines(size: number, isCol = true) {
@@ -134,16 +143,19 @@ export class BoardService {
         cell.alive = this.toggleMode ? !cell.alive : true;
       }
     });
+    this.field$.next(this.field);
   }
 
   fillPatter(size: number) {
     this.field.forEach((cell, index) => {
       cell.alive = index % size === 0;
     });
+    this.field$.next(this.field);
   }
 
   clearGame() {
     this.field = this.generateField();
+    this.field$.next(this.field);
   }
 
   checkGameOver(): boolean {

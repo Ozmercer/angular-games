@@ -1,9 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-cell',
   templateUrl: './cell.component.html',
-  styleUrls: ['./cell.component.scss']
+  styleUrls: ['./cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CellComponent {
   @Input() alive: boolean;

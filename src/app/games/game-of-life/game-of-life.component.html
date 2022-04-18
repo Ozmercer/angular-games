@@ -34,16 +34,16 @@
       <section class="pattern-fill">
         <label>
           Toggle Mode
-          <mat-checkbox [(ngModel)]="boardService.toggleMode"></mat-checkbox>
+          <mat-checkbox [checked]="isToggleMode" (change)="setToggleMode()"></mat-checkbox>
         </label>
         <p class="title">Auto pattern</p>
         <div class="buttons">
-          <button mat-raised-button color="primary" (click)="boardService.fillEdges('top')">Top</button>
-          <button mat-raised-button color="primary" (click)="boardService.fillEdges('bottom')">Bottom</button>
-          <button mat-raised-button color="primary" (click)="boardService.fillEdges('left')">Left</button>
-          <button mat-raised-button color="primary" (click)="boardService.fillEdges('right')">Right</button>
-          <button mat-raised-button color="primary" (click)="boardService.fillEdges()">Edges</button>
-          <button mat-raised-button color="primary" (click)="boardService.fillX()">Big X</button>
+          <button mat-raised-button color="primary" (click)="fillEdges(side.Top)">Top</button>
+          <button mat-raised-button color="primary" (click)="fillEdges(side.Bottom)">Bottom</button>
+          <button mat-raised-button color="primary" (click)="fillEdges(side.Left)">Left</button>
+          <button mat-raised-button color="primary" (click)="fillEdges(side.Right)">Right</button>
+          <button mat-raised-button color="primary" (click)="fillEdges(side.All)">Edges</button>
+          <button mat-raised-button color="primary" (click)="fillEdges(side.X)">Big X</button>
         </div>
 
         <hr>
@@ -52,34 +52,34 @@
         <label>
           <span>
           Size:
-            <input matInput type="number" min="1" [(ngModel)]="boardService.tileSize" autocomplete="off">
+            <input matInput type="number" min="1" [(ngModel)]="tileSize" autocomplete="off">
           </span>
-          <button mat-button (click)="boardService.fillTiles(boardService.tileSize + 1)">Add Tiles</button>
+          <button mat-button (click)="setTiles(tileSize)">Add Tiles</button>
         </label>
 
         <label>
           <span>
             Size:
-            <input matInput type="number" min="2" [(ngModel)]="boardService.colSpread" autocomplete="off">
+            <input matInput type="number" min="2" [(ngModel)]="colSpread" autocomplete="off">
           </span>
-          <button mat-button (click)="boardService.fillLines(boardService.colSpread)">Add Columns</button>
+          <button mat-button (click)="fillLines(colSpread)">Add Columns</button>
         </label>
 
         <label>
           <span>
             Size:
-            <input matInput type="number" min="2" [(ngModel)]="boardService.rowSpread" autocomplete="off">
+            <input matInput type="number" min="2" [(ngModel)]="rowSpread" autocomplete="off">
           </span>
-          <button mat-button (click)="boardService.fillLines(boardService.rowSpread, false)">Add Rows</button>
+          <button mat-button (click)="fillLines(rowSpread, false)">Add Rows</button>
         </label>
 
         <label>
           <span>
             Size:
-            <input matInput (input)="boardService.fillPatter($event.target.value)" [(ngModel)]="boardService.pattern" min="1"
+            <input matInput (input)="setPattern(patternSize)" [(ngModel)]="patternSize" min="1"
                    type="number" autocomplete="off">
           </span>
-          <button mat-button (click)="boardService.fillPatter(boardService.pattern)">Pattern</button>
+          <button mat-button (click)="setPattern(patternSize)">Pattern</button>
         </label>
       </section>
 
@@ -107,8 +107,8 @@
     <div class="field-wrapper">
       <strong *ngIf="gameOver" class="game-over">GAME OVER! </strong>
       <div class="field"
-           [ngStyle]="{'grid-template-columns': 'repeat(' + boardService.BOARD_SIZE + ', 1fr)', width: 20 * boardService.BOARD_SIZE + 'px'}">
-        <div class="cells" *ngFor="let cell of boardService.field">
+           [ngStyle]="{'grid-template-columns': 'repeat(' + boardSize + ', 1fr)', width: 20 * boardSize + 'px'}">
+        <div class="cells" *ngFor="let cell of field | async">
           <app-cell (mouseover)="onDraw(cell, $event)" (mousedown)="onDraw(cell, $event)" [alive]="cell.alive">
           </app-cell>
         </div>
